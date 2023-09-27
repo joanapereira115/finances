@@ -1,0 +1,19 @@
+"account": {
+        "id": "c1",
+        "name": "Cartão BPI",
+        "balance": 789.10,
+        "type": "card",
+        "active": true
+    }
+
+    "expense": {
+        "id": "e2",
+        "name": "Continente",
+        "date": "26-09-2023",
+        "year": 2023,
+        "value": 21.53,
+        "nif": true,
+        "iva": 0,
+        "account": "c1",
+        "category": "SUPE"
+    }
