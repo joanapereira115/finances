@@ -10,6 +10,7 @@ import { selectedPin } from '@/app/store/pin-context';
 import { selectedYear } from '@/app/store/year-context';
 import { getExpensesByCat } from '@/app/lib/data';
 import ExpensesByCatg from '@/app/ui/reports/ExpensesByCatg';
+import YearCatg from '@/app/ui/reports/YearCatg';
 
 export default function Page() {
   const [expensesByCatg, setExpensesByCatg] = useState([]);
@@ -34,9 +35,14 @@ export default function Page() {
   }, [pin, router]);
 
   return (
-    <div className="grid w-full">
-      <Suspense fallback={<RevenueChartSkeleton />}>
-        <ExpensesByCatg expenses={expensesByCatg} />
+    <div className="grid w-full grid-cols-[54%_42%] gap-4">
+      <Suspense>
+        <div>
+          <ExpensesByCatg expenses={expensesByCatg} />
+        </div>
+        <div>
+          <YearCatg expenses={expensesByCatg} />
+        </div>
       </Suspense>
     </div>
   );

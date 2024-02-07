@@ -7,6 +7,7 @@ export const EXPENSES_FILE = `${TARGET_DIR}/expensesData.json`;
 export const INCOME_FILE = `${TARGET_DIR}/incomeData.json`;
 export const ACCOUNTS_FILE = `${TARGET_DIR}/accountsData.json`;
 export const PIN_FILE = `${TARGET_DIR}/pinData.json`;
+export const IRS_FILE = `${TARGET_DIR}/irsData.json`;
 
 export async function readFile(filename: string, pin: string) {
   if (HOME_DIR === undefined) {

@@ -9,6 +9,7 @@ import {
   EXPENSES_FILE,
   INCOME_FILE,
   ACCOUNTS_FILE,
+  IRS_FILE
 } from './files';
 
 export async function pinDefined() {
@@ -86,6 +87,7 @@ export async function initialize() {
     createFile(EXPENSES_FILE);
     createFile(INCOME_FILE);
     createFile(ACCOUNTS_FILE);
+    createFile(IRS_FILE);
     dir.close();
   } catch (error) {
     return false;
