@@ -1,6 +1,3 @@
-// This file contains type definitions for your data.
-// It describes the shape of the data, and what data type each property should accept.
-
 export type Expense = {
   id: string;
   name: string;
@@ -47,7 +44,7 @@ export type IRSDef = {
   year: number;
   type: string;
   grossIncome: number;
-  withholding: number;
+  withHolding: number;
   socialSecurity: number;
   youngIrs: number | string;
   deductions: number;
@@ -55,15 +52,15 @@ export type IRSDef = {
 };
 
 export type CalculatedIRS = {
-  rendCol: number;
-  impApur: number;
-  impIse: number;
-  colTot: number;
-  IRSpay: number;
-  IRSreceive: number;
-  tax: number;
-  parcel: number;
-};
+  collIncome: number; // Rendimento coletável
+  impDetermined: number; // Importância apurada
+  exemptTax: number; // Imposto de rendimentos isentos
+  totCollect: number; // Coleta total
+  irsToPay: number; // Valor a pagar
+  irsToReceive: number; // Valor a receber
+  tax: number; // Taxa
+  parcel: number; // Parcela a abater
+};  
 
 export type MonthlyBalance = {
   month: number;

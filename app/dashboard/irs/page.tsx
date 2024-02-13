@@ -36,9 +36,9 @@ export default function Page() {
     <div className="grid w-full grid-cols-[32%_65.5%] gap-4">
       <div>
         <IRSForm irsData={irsData} updateHandler={setUpdated} />
-        <p className="m-4 text-gray-200">
+        <p className="m-4 text-gray-200 text-sm">
           <i>
-            Esta simulação não contempla todas situações existentes para o
+            * Esta simulação não contempla todas situações existentes para o
             cálculo do valor do IRS a pagar ou receber, e por isso não deve ser
             considerado como valor exato. É apenas uma simulação de alto nível e
             o valor gerado poderá ser diferente do real.

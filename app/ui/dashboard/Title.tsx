@@ -6,6 +6,7 @@ const pageTitles = [
   { path: '/dashboard', title: 'Página Inicial' },
   { path: '/dashboard/expenses', title: 'Despesas' },
   { path: '/dashboard/income', title: 'Rendimentos' },
+  { path: '/dashboard/transfers', title: 'Transferências' },
   { path: '/dashboard/accounts', title: 'Contas' },
   { path: '/dashboard/reports', title: 'Relatórios' },
   { path: '/dashboard/irs', title: 'IRS' },

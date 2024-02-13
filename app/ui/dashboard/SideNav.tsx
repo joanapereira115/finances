@@ -11,12 +11,18 @@ import {
   ChartPieIcon,
   ReceiptPercentIcon,
   PowerIcon,
+  ArrowsRightLeftIcon,
 } from '@heroicons/react/24/solid';
 
 const links = [
   { name: 'Home', href: '/dashboard', icon: HomeIcon },
   { name: 'Expenses', href: '/dashboard/expenses', icon: BanknotesIcon },
   { name: 'Income', href: '/dashboard/income', icon: CurrencyEuroIcon },
+  {
+    name: 'Transfers',
+    href: '/dashboard/transfers',
+    icon: ArrowsRightLeftIcon,
+  },
   { name: 'Accounts', href: '/dashboard/accounts', icon: WalletIcon },
   { name: 'Reports', href: '/dashboard/reports', icon: ChartPieIcon },
   { name: 'IRS', href: '/dashboard/irs', icon: ReceiptPercentIcon },
@@ -27,14 +33,14 @@ export default function SideNav() {
 
   return (
     <div className="sticky flex h-full items-center bg-white px-6 drop-shadow-md">
-      <div className="flex flex-grow flex-col">
+      <div className="flex flex-grow flex-col mt-[-2.5rem]">
         {links.map((link) => {
           const LinkIcon = link.icon;
           return (
             <Link key={link.name} href={link.href}>
               <LinkIcon
                 color="#555985"
-                className={clsx('w-10 py-4 hover:scale-110 hover:opacity-100', {
+                className={clsx('w-10 py-[1.1rem] hover:scale-110 hover:opacity-100', {
                   'opacity-60': pathname !== link.href,
                   'scale-110': pathname === link.href,
                 })}
@@ -51,3 +57,4 @@ export default function SideNav() {
     </div>
   );
 }
+

@@ -21,13 +21,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { IRSDef } from '@/app/lib/definitions';
 import { updateIRS } from '@/app/lib/irs';
-
-const types = [
-  {
-    id: 'sol',
-    description: 'Solteiro',
-  },
-];
+import { youngIRS, types } from '@/app/lib/irsData';
 
 export default function IRSForm({
   irsData,
@@ -45,11 +39,13 @@ export default function IRSForm({
   const [young, setYoung] = useState<string | number>('');
   const [deduction, setDeduction] = useState<string | number>('');
 
+  console.log(types);
+
   useEffect(() => {
     if (irsData) {
       setType(irsData.type);
       setGross(irsData.grossIncome);
-      setRetention(irsData.withholding);
+      setRetention(irsData.withHolding);
       setYoung(irsData.youngIrs);
       setDeduction(irsData.deductions);
     }
@@ -75,7 +71,7 @@ export default function IRSForm({
       year: +year,
       type: (formData.get('type') as string) || '',
       grossIncome: (formData.get('gross') as unknown as number) || 0,
-      withholding: (formData.get('retention') as unknown as number) || 0,
+      withHolding: (formData.get('retention') as unknown as number) || 0,
       youngIrs: (formData.get('young') as unknown as number) || '',
       deductions: (formData.get('deduction') as unknown as number) || 0,
       socialSecurity: 0,
@@ -108,7 +104,7 @@ export default function IRSForm({
             <option value="" disabled>
               Tipo de tributação
             </option>
-            {types.map((type) => (
+            {types?.map((type) => (
               <option key={type.id} value={type.id}>
                 {type.description}
               </option>
@@ -161,12 +157,14 @@ export default function IRSForm({
             onChange={(e) => setYoung(e.target.value)}
             value={young}
           >
-            <option value="">IRS Jovem</option>
-            <option value={1}>1º Ano</option>
-            <option value={2}>2º Ano</option>
-            <option value={3}>3º Ano</option>
-            <option value={4}>4º Ano</option>
-            <option value={5}>5º Ano</option>
+            <option value="" disabled>
+              IRS Jovem
+            </option>
+            {youngIRS[year]?.map((youngVal) => (
+              <option key={youngVal.id} value={youngVal.id}>
+                {youngVal.description}
+              </option>
+            ))}
           </select>
           <WalletIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500" />
         </div>
