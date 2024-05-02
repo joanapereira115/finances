@@ -76,7 +76,13 @@ export async function editIncome(income: Income, pin: string) {
       ACCOUNTS_FILE,
       pin,
       income.account,
-      +prev.value * -1 + +income.value,
+      +income.value,
+    );
+    await updateAccount(
+      ACCOUNTS_FILE,
+      pin,
+      prev.account,
+      +prev.value * -1,
     );
   } catch (error) {
     console.error('Error editing income:', error);

@@ -27,7 +27,8 @@ export async function fetchAccounts(pin: string) {
       (catA === 'CARD' && catB !== 'CARD') ||
       (catA === 'MONE' && catB !== 'CARD') ||
       (catA === 'MEAL' && catB !== 'CARD' && catB !== 'MONE') ||
-      (catA === 'SAVI' && catB !== 'CARD' && catB !== 'MONE' && catB !== 'MEAL')
+      (catA === 'SAVI' && catB !== 'CARD' && catB !== 'MONE' && catB !== 'MEAL') ||
+      (catA === 'INVE' && catB !== 'CARD' && catB !== 'MONE' && catB !== 'MEAL' && catB !== 'SAVI')
     ) {
       return -1;
     } else {

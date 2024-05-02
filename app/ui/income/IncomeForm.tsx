@@ -40,7 +40,6 @@ export default function IncomeForm({
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     newIncomeHandler(formData, pin);
-    resetState();
     updateHandler((old) => !old);
     event.target.reset();
   };

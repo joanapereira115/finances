@@ -4,6 +4,7 @@ import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'next/navigation';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { Suspense } from 'react';
 
 import { selectedPin } from '@/app/store/pin-context';
 import { selectedYear } from '@/app/store/year-context';
@@ -11,6 +12,7 @@ import ExpensesTable from '@/app/ui/expenses/ExpensesTable';
 import Pagination from '@/app/ui/ui/Pagination';
 import { Account } from '@/app/lib/definitions';
 import { fetchExpenses } from '@/app/lib/expenses';
+import { ExpensesTableSkeleton } from '@/app/ui/skeletons';
 
 export default function Expenses({
   accounts,
@@ -53,13 +55,18 @@ export default function Expenses({
   const expensesPage = [...expenses.slice(indexInit, indexInit + 10)];
 
   return (
-    <div>
+    <Suspense fallback={<ExpensesTableSkeleton />}>
       <div className="mt-4 justify-center">
-        <ExpensesTable expenses={expensesPage} accounts={accounts} expenseUpdate={updateHandler} pin={pin} />
+        <ExpensesTable
+          expenses={expensesPage}
+          accounts={accounts}
+          expenseUpdate={updateHandler}
+          pin={pin}
+        />
         <div className="text-center">
           <Pagination totalElems={expenses.length} page={page} />
         </div>
       </div>
-    </div>
+    </Suspense>
   );
 }

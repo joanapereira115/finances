@@ -69,14 +69,33 @@ export default function YearCatg({ expenses }: { expenses: ExpensesByCat[] }) {
           '#ffffff',
           '#ffffff',
         ],
-        borderWidth: 1,
+        borderWidth: 1.5,
       },
     ],
   };
 
+  const options = {
+    plugins: {
+      legend: {
+        display: false,
+      },
+      title: {
+        display: false,
+      },
+      subtitle: {
+        display: false,
+      },
+    },
+  };
+
   return (
-    <div className="mx-4 mt-4 flex h-[84vh] w-full items-center justify-center rounded-xl bg-white p-2 drop-shadow-md">
-      <Pie data={data} />
+    <div className="mt-4 flex h-[50vh] grow flex-col justify-between rounded-xl bg-white p-4 drop-shadow-md">
+      <div className="text-center overflow-x-hidden overflow-y-hidden">
+        <h2 className="m-2 text-lg font-bold">Despesas por categoria</h2>
+        <div className="flex items-center justify-center">
+          <Pie className='scale-75 translate-y-[-2.75rem]' data={data} options={options} />
+        </div>
+      </div>
     </div>
   );
 }

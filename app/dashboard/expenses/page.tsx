@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Suspense } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { selectedPin } from '@/app/store/pin-context';
 import ExpenseForm from '@/app/ui/expenses/ExpenseForm';
 import Expenses from '@/app/ui/expenses/Expenses';
-import { ExpensesTableSkeleton } from '@/app/ui/skeletons';
 import { fetchAccounts } from '@/app/lib/accounts';
 
 export default function Page() {
@@ -35,13 +33,11 @@ export default function Page() {
         <ExpenseForm accounts={accounts} updateHandler={setUpdated} />
       </div>
       <div>
-        <Suspense fallback={<ExpensesTableSkeleton />}>
-          <Expenses
-            accounts={accounts}
-            updated={updated}
-            updateHandler={setUpdated}
-          />
-        </Suspense>
+        <Expenses
+          accounts={accounts}
+          updated={updated}
+          updateHandler={setUpdated}
+        />
       </div>
     </div>
   );

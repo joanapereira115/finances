@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { Account } from '@/app/lib/definitions';
 import { Button } from '@/app/ui/button';
-import { newIncomeHandler } from '@/app/lib/actions';
+import { newTransferHandler } from '@/app/lib/actions';
 import { selectedPin } from '@/app/store/pin-context';
 
 import {
@@ -24,16 +24,18 @@ export default function TransferForm({
   const pin = useSelector(selectedPin);
   const formRef = useRef(null);
   const [name, setName] = useState('');
+  const [date, setDate] = useState('');
   const [accountFrom, setAccountFrom] = useState('');
   const [accountTo, setAccountTo] = useState('');
   let disable = false;
 
-  if (!name || !accountFrom || !accountTo) {
+  if (!name || !date || !accountFrom || !accountTo) {
     disable = true;
   }
 
   const resetState = () => {
     setName('');
+    setDate('');
     setAccountFrom('');
     setAccountTo('');
   };
@@ -41,8 +43,7 @@ export default function TransferForm({
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    //newIncomeHandler(formData, pin);
-    resetState();
+    newTransferHandler(formData, pin);
     updateHandler((old) => !old);
     event.target.reset();
   };
@@ -80,6 +81,7 @@ export default function TransferForm({
               name="date"
               type="date"
               defaultValue={new Date().toDateString()}
+              onChange={(e) => setDate(e.target.value)}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             />
             <CalendarDaysIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -88,8 +90,8 @@ export default function TransferForm({
 
         <div className="relative mt-3 rounded-md">
           <select
-            id="account"
-            name="account"
+            id="accountFrom"
+            name="accountFrom"
             className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             defaultValue=""
             required
@@ -112,8 +114,8 @@ export default function TransferForm({
 
         <div className="relative mt-3 rounded-md">
           <select
-            id="account"
-            name="account"
+            id="accountTo"
+            name="accountTo"
             className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             defaultValue=""
             required

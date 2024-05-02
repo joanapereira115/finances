@@ -92,7 +92,7 @@ let expensesColumns = [
   { id: 'account', name: 'Conta' },
   { id: 'category', name: 'Categoria' },
   { id: 'nif', name: 'Fatura?' },
-  { id: 'iva', name: 'IVA' },
+  { id: 'iva', name: 'IRS' },
   { id: 'actions', name: '' },
 ];
 
@@ -101,6 +101,15 @@ let incomeColumns = [
   { id: 'date', name: 'Data' },
   { id: 'value', name: 'Valor' },
   { id: 'account', name: 'Conta' },
+  { id: 'actions', name: '' },
+];
+
+let transferColumns = [
+  { id: 'name', name: 'Descrição' },
+  { id: 'date', name: 'Data' },
+  { id: 'value', name: 'Valor' },
+  { id: 'accountFrom', name: 'Da conta' },
+  { id: 'accountTo', name: 'Para a conta' },
   { id: 'actions', name: '' },
 ];
 
@@ -232,6 +241,68 @@ export function IncomeTableSkeleton() {
             <IncomeTableRowSkeleton />
             <IncomeTableRowSkeleton />
             <IncomeTableRowSkeleton />
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
+export function TransferTableRowSkeleton() {
+  return (
+    <tr className="mt-2 border-b">
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-32 rounded bg-white"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-32 rounded bg-white"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-16 rounded bg-white"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-32 rounded bg-white"></div>
+      </td>
+      <td className="whitespace-nowrap px-3 py-3">
+        <div className="h-6 w-32 rounded bg-white"></div>
+      </td>
+      <td className="whitespace-nowrap py-3 pl-6 pr-3">
+        <div className="flex justify-end gap-3">
+          <div className="h-6 w-6 rounded bg-white"></div>
+          <div className="h-6 w-6 rounded bg-white"></div>
+        </div>
+      </td>
+    </tr>
+  );
+}
+
+export function TransferTableSkeleton() {
+  return (
+    <div
+      className={`${shimmer} relative mt-4 overflow-hidden rounded-xl bg-gray-100 p-2`}
+    >
+      <div className="inline-block min-w-[99%] align-middle">
+        <table className="w-full">
+          <thead className="text-left text-sm font-normal">
+            <tr className="border-b">
+              {transferColumns?.map((col) => (
+                <th key={col.id} className="px-3 py-3 font-bold">
+                  {col.name ? col.name : <span className="sr-only">Edit</span>}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="w-full align-middle">
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
+            <TransferTableRowSkeleton />
           </tbody>
         </table>
       </div>

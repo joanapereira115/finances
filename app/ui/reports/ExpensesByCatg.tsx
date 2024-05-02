@@ -11,8 +11,8 @@ export default function ExpensesByCatg({
   let monthList = Object.entries(months);
 
   return (
-    <div className="mx-4 mt-4 flex h-[84vh] w-full justify-between rounded-xl bg-white p-2 drop-shadow-md">
-      <div className="overflow-y-auto overflow-x-hidden align-middle">
+    <div className="mx-4 mt-4 flex justify-center h-[84vh] rounded-xl bg-white p-2 drop-shadow-md">
+      <div className="w-full overflow-scroll align-middle ">
         <table>
           <thead className="text-left text-sm font-normal">
             <tr className="border-b">
@@ -24,6 +24,9 @@ export default function ExpensesByCatg({
                   {month[1]}
                 </th>
               ))}
+              <th scope="col" className="px-3 py-3 font-bold">
+                Total
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white">
@@ -39,7 +42,7 @@ export default function ExpensesByCatg({
               >
                 <td className="py-3 pl-3 pr-3">{cat.name}</td>
                 {monthList.map((month) => (
-                  <td className="py-3 pl-3 pr-3">
+                  <td key={month[0]} className="py-3 pl-3 pr-3">
                     {
                       expenses.find((obj) => {
                         return (
@@ -49,6 +52,14 @@ export default function ExpensesByCatg({
                     }
                   </td>
                 ))}
+                <td className="py-3 pl-3 pr-3">
+                  {expenses?.reduce((total: number, curr: ExpensesByCat) => {
+                    if (curr.cat === cat.id) {
+                      return Number(+total + +curr.value.toFixed(2));
+                    }
+                    return Number(total.toFixed(2));
+                  }, 0)}
+                </td>
               </tr>
             ))}
           </tbody>

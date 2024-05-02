@@ -4,6 +4,7 @@ const accountCategories = [
   { id: 'SAVI', description: 'Poupança' },
   { id: 'MEAL', description: 'Cartão Alimentação' },
   { id: 'INVE', description: 'Depósito a Prazo' },
+  { id: 'CEAF', description: 'Certificado de Aforro' },
 ];
 
 const irsCategories = [
@@ -72,7 +73,7 @@ const expenseCategories = [
   { id: 'HOSP', name: 'Hospital', irsCategory: 'SD' },
   { id: 'BELE', name: 'Beleza', irsCategory: 'DG' },
   { id: 'DENT', name: 'Dentista', irsCategory: 'SD' },
-  { id: 'DEPI', name: 'Depilação', irsCategory: 'CB' },
+  { id: 'DEPI', name: 'Esteticista', irsCategory: 'CB' },
   { id: 'CABE', name: 'Cabeleireiros', irsCategory: 'CB' },
   { id: 'FARM', name: 'Farmácia', irsCategory: 'SD' },
   { id: 'PASS', name: 'Passe', irsCategory: 'PM' },

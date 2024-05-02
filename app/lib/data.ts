@@ -189,7 +189,7 @@ export async function getExpensesByCat(pin: string, year: number) {
       result.push({
         month: i,
         cat: catg.id,
-        value: Number(expense.toFixed(2)),
+        value: +expense.toFixed(2),
       });
     }
   }

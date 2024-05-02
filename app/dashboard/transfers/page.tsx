@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectedPin } from '@/app/store/pin-context';
 import { Suspense } from 'react';
-import { IncomeTableSkeleton } from '@/app/ui/skeletons';
+import { TransferTableSkeleton } from '@/app/ui/skeletons';
 import { fetchAccounts } from '@/app/lib/accounts';
 import { useRouter } from 'next/navigation';
 
-import Income from '@/app/ui/income/Income';
 import TransferForm from '@/app/ui/transfers/TransferForm';
+import Transfers from '@/app/ui/transfers/Transfers';
 
 export default function Page() {
   const [accounts, setAccounts] = useState([]);
@@ -35,8 +35,8 @@ export default function Page() {
         <TransferForm accounts={accounts} updateHandler={setUpdated} />
       </div>
       <div>
-        <Suspense fallback={<IncomeTableSkeleton />}>
-          <Income
+        <Suspense fallback={<TransferTableSkeleton />}>
+          <Transfers
             accounts={accounts}
             updated={updated}
             updateHandler={setUpdated}

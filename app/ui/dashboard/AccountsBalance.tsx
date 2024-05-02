@@ -9,6 +9,7 @@ import {
   ArrowTrendingUpIcon,
   KeyIcon,
   ExclamationCircleIcon,
+  BuildingLibraryIcon,
 } from '@heroicons/react/24/outline';
 
 import { selectedPin } from '@/app/store/pin-context';
@@ -33,27 +34,36 @@ export default async function AccountsBalance() {
       {accounts && accounts.length > 0 ? (
         <div className="overflow-y-auto overflow-x-hidden">
           {accounts.map(
-            (account) =>
+            (account, i) =>
               account.active && (
                 <div
                   key={account.id}
                   className="grid w-full grid-cols-[10%_90%] gap-2"
                 >
                   <div className="flex items-center">
-                    {account.type === 'CARD' && (
-                      <CreditCardIcon className="pointer-events-none mr-2 h-9 w-9 text-sky-500" />
+                    {((account.type === 'CARD' && i === 0) ||
+                      (account.type === 'CARD' &&
+                        i !== 0 &&
+                        account.type !== accounts[+i - 1].type)) && (
+                      <CreditCardIcon className="pointer-events-none mx-2 h-9 w-9 text-sky-500" />
                     )}
                     {account.type === 'MONE' && (
-                      <BanknotesIcon className="pointer-events-none mr-2 h-9 w-9 text-green-400" />
+                      <BanknotesIcon className="pointer-events-none mx-2 h-9 w-9 text-green-400" />
                     )}
                     {account.type === 'MEAL' && (
-                      <ShoppingCartIcon className="pointer-events-none mr-2 h-9 w-9 text-lilac-100" />
+                      <ShoppingCartIcon className="pointer-events-none mx-2 h-9 w-9 text-lilac-100" />
                     )}
                     {account.type === 'SAVI' && (
-                      <KeyIcon className="pointer-events-none mr-2 h-9 w-9 text-yellow-300" />
+                      <KeyIcon className="pointer-events-none mx-2 h-9 w-9 text-yellow-300" />
                     )}
-                    {account.type === 'INVE' && (
-                      <ArrowTrendingUpIcon className="pointer-events-none mr-2 h-9 w-9 text-orange-400" />
+                    {((account.type === 'INVE' && i === 0) ||
+                      (account.type === 'INVE' &&
+                        i !== 0 &&
+                        account.type !== accounts[+i - 1].type)) && (
+                      <ArrowTrendingUpIcon className="pointer-events-none mx-2 h-9 w-9 text-orange-400" />
+                    )}
+                    {account.type === 'CEAF' && (
+                      <BuildingLibraryIcon className="pointer-events-none mx-2 h-9 w-9 text-red-400" />
                     )}
                   </div>
                   <div className="p-2">

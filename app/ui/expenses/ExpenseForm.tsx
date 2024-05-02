@@ -26,9 +26,10 @@ export default function ExpenseForm({
   const formRef = useRef(null);
   const [name, setName] = useState('');
   const [account, setAccount] = useState('');
+  const [date, setDate] = useState('');
   let disable = false;
 
-  if (!name || !account) {
+  if (!name || !account || !date) {
     disable = true;
   }
 
@@ -44,6 +45,7 @@ export default function ExpenseForm({
     event.preventDefault();
     setName('');
     setAccount('');
+    setDate('');
     formRef.current?.reset();
   };
 
@@ -74,6 +76,7 @@ export default function ExpenseForm({
               name="date"
               type="date"
               defaultValue={new Date().toDateString()}
+              onChange={(e) => setDate(e.target.value)}
               className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             />
             <CalendarDaysIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -159,7 +162,7 @@ export default function ExpenseForm({
             type="number"
             min={0.0}
             step="0.01"
-            placeholder="IVA"
+            placeholder="Benefício IRS"
             className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2"
           />
           <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />

@@ -53,7 +53,7 @@ export async function fetchExpenses(pin: string, year: number) {
 
     return result;
   } catch (error) {
-    console.error('Error reading file:', error);
+    console.error('Error reading file: ', EXPENSES_FILE, error);
     return [];
   }
 }
@@ -62,7 +62,6 @@ export async function fetchExpenses(pin: string, year: number) {
 export async function deleteExpense(id: string, pin: string) {
   try {
     let expensesData = await readFile(EXPENSES_FILE, pin);
-    console.log(expensesData);
     const prev = expensesData.find((obj: Expense) => obj.id === id);
     const newData = expensesData.filter(
       (expense: Expense) => expense.id !== id,
@@ -75,6 +74,7 @@ export async function deleteExpense(id: string, pin: string) {
 }
 
 /* edit existing expense */
+// ERRO!!! verificar em que conta estava antes para atualizar!!!!!
 export async function editExpense(expense: Expense, pin: string) {
   try {
     const jsonData = await readFile(EXPENSES_FILE, pin);
@@ -91,8 +91,9 @@ export async function editExpense(expense: Expense, pin: string) {
       ACCOUNTS_FILE,
       pin,
       expense.account,
-      +expense.value * -1 + +prev.value,
+      +expense.value * -1,
     );
+    await updateAccount(ACCOUNTS_FILE, pin, prev.account, +prev.value);
   } catch (error) {
     console.error('Error editing expense:', error);
   }

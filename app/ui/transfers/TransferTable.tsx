@@ -1,5 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
-import { Account, Column, Income } from '@/app/lib/definitions';
+import { Account, Column, Transfer } from '@/app/lib/definitions';
 import DataTable from '../ui/DataTable';
 import { deleteHandler, updateHandler } from '@/app/lib/actions';
 
@@ -7,30 +7,31 @@ const columns: Column[] = [
   { id: 'name', name: 'Descrição' },
   { id: 'date', name: 'Data' },
   { id: 'value', name: 'Valor' },
-  { id: 'account', name: 'Conta' },
+  { id: 'accountFrom', name: 'Da conta' },
+  { id: 'accountTo', name: 'Para a conta' },
   { id: 'actions', name: '' },
 ];
 
 export default function TransferTable({
-  income,
+  transfers,
   accounts,
   pin,
-  incomeUpdate,
+  transfersUpdate,
 }: {
-  income: Income[];
+  transfers: Transfer[];
   accounts: Account[];
   pin: string;
-  incomeUpdate: Dispatch<SetStateAction<boolean>>;
+  transfersUpdate: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <DataTable
-      items={income}
+      items={transfers}
       accounts={accounts}
       columns={columns}
       updateHandler={updateHandler}
       deleteHandler={deleteHandler}
-      setUpdated={incomeUpdate}
-      type="income"
+      setUpdated={transfersUpdate}
+      type="transfer"
       pin={pin}
     />
   );

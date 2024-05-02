@@ -10,7 +10,7 @@ const columns: Column[] = [
   { id: 'account', name: 'Conta' },
   { id: 'category', name: 'Categoria' },
   { id: 'nif', name: 'Fatura?' },
-  { id: 'iva', name: 'IVA' },
+  { id: 'iva', name: 'IRS' },
   { id: 'actions', name: '' },
 ];
 

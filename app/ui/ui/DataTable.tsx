@@ -10,7 +10,13 @@ import {
   NoSymbolIcon,
 } from '@heroicons/react/24/outline';
 
-import { Account, Column, Expense, Income } from '@/app/lib/definitions';
+import {
+  Account,
+  Column,
+  Expense,
+  Income,
+  Transfer,
+} from '@/app/lib/definitions';
 import { formatDateToLocal } from '@/app/lib/utils';
 import { expenseCategories, accountCategories } from '@/app/lib/categories';
 
@@ -36,11 +42,11 @@ export default function DataTable({
   type,
   pin,
 }: {
-  items: (Expense | Income | Account)[];
+  items: (Expense | Income | Account | Transfer)[];
   columns: Column[];
   accounts: Account[];
   updateHandler: (
-    item: Expense | Income | Account,
+    item: Expense | Income | Account | Transfer,
     type: string,
     pin: string,
   ) => Promise<void>;
@@ -51,7 +57,7 @@ export default function DataTable({
 }) {
   const [editMode, setEditMode] = useState<string | null>(null);
   const [editedLine, setEditedLine] = useState<
-    Expense | Income | Account | null
+    Expense | Income | Account | Transfer | null
   >(null);
   let disable = false;
 
@@ -73,6 +79,16 @@ export default function DataTable({
     }
   }
 
+  if (type === 'transfer') {
+    if (
+      !(editedLine as Transfer)?.name ||
+      !(editedLine as Transfer)?.accountFrom ||
+      !(editedLine as Transfer)?.accountTo
+    ) {
+      disable = true;
+    }
+  }
+
   function getDescFromAccount(id: string, accounts: Account[]) {
     let accountsCopy = [...accounts];
     const account = accountsCopy.find((acc) => acc.id === id);
@@ -85,7 +101,11 @@ export default function DataTable({
   };
 
   const handleSaveClick = () => {
-    updateHandler(editedLine as Expense | Income | Account, type, pin);
+    updateHandler(
+      editedLine as Expense | Income | Account | Transfer,
+      type,
+      pin,
+    );
     setUpdated((old) => !old);
     exitEditing();
   };
@@ -95,7 +115,11 @@ export default function DataTable({
     setUpdated((old) => !old);
   };
 
-  function UpdateLine({ item }: { item: Expense | Income | Account }) {
+  function UpdateLine({
+    item,
+  }: {
+    item: Expense | Income | Account | Transfer;
+  }) {
     return (
       <div
         onClick={() => {
@@ -162,7 +186,10 @@ export default function DataTable({
     );
   }
 
-  function renderCell(item: Expense | Income | Account, column: string) {
+  function renderCell(
+    item: Expense | Income | Account | Transfer,
+    column: string,
+  ) {
     switch (column) {
       case 'name':
         return editMode === item.id ? (
@@ -172,7 +199,9 @@ export default function DataTable({
             value={editedLine?.name}
             onChange={(e) =>
               setEditedLine(
-                (prevEditedLine: Expense | Income | Account | null) => {
+                (
+                  prevEditedLine: Expense | Income | Account | Transfer | null,
+                ) => {
                   if (prevEditedLine) {
                     return {
                       ...prevEditedLine,
@@ -203,7 +232,9 @@ export default function DataTable({
             value={(editedLine as Expense | Income)?.date}
             onChange={(e) =>
               setEditedLine(
-                (prevEditedLine: Expense | Income | Account | null) => {
+                (
+                  prevEditedLine: Expense | Income | Account | Transfer | null,
+                ) => {
                   if (prevEditedLine) {
                     return {
                       ...prevEditedLine,
@@ -216,7 +247,7 @@ export default function DataTable({
             }
           />
         ) : (
-          formatDateToLocal((item as Expense | Income).date)
+          formatDateToLocal((item as Expense | Income | Transfer).date)
         );
       case 'value':
         return editMode === item.id ? (
@@ -227,10 +258,12 @@ export default function DataTable({
             min={0.0}
             step="0.01"
             className="peer block w-full rounded-md border border-gray-200 text-sm outline-2"
-            value={(editedLine as Expense | Income)?.value}
+            value={(editedLine as Expense | Income | Transfer)?.value}
             onChange={(e) =>
               setEditedLine(
-                (prevEditedLine: Expense | Income | Account | null) => {
+                (
+                  prevEditedLine: Expense | Income | Account | Transfer | null,
+                ) => {
                   if (prevEditedLine) {
                     return {
                       ...prevEditedLine,
@@ -243,7 +276,7 @@ export default function DataTable({
             }
           />
         ) : (
-          `${(item as Expense | Income).value}€`
+          `${(item as Expense | Income | Transfer).value}€`
         );
       case 'balance':
         return editMode === item.id ? (
@@ -254,17 +287,15 @@ export default function DataTable({
             className="w-full rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Account)?.balance}
             onChange={(e) =>
-              setEditedLine(
-                (prevEditedLine: Expense | Income | Account | null) => {
-                  if (prevEditedLine) {
-                    return {
-                      ...prevEditedLine,
-                      balance: +e.target.value,
-                    };
-                  }
-                  return null;
-                },
-              )
+              setEditedLine((prevEditedLine: Account | null) => {
+                if (prevEditedLine) {
+                  return {
+                    ...prevEditedLine,
+                    balance: +e.target.value,
+                  };
+                }
+                return null;
+              })
             }
           />
         ) : (
@@ -306,6 +337,60 @@ export default function DataTable({
           </select>
         ) : (
           getDescFromAccount((item as Expense | Income).account, accounts)
+        );
+      case 'accountFrom':
+        return editMode === item.id ? (
+          <select
+            className="peer block w-full cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            value={(editedLine as Transfer)?.accountFrom}
+            onChange={(e) =>
+              setEditedLine((prevEditedLine: Transfer | null) => {
+                if (prevEditedLine) {
+                  return {
+                    ...prevEditedLine,
+                    account: e.target.value,
+                  };
+                }
+                return null;
+              })
+            }
+          >
+            <option value="" disabled></option>
+            {accounts.map((acc) => (
+              <option key={acc.id} value={acc.id}>
+                {acc.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          getDescFromAccount((item as Transfer).accountFrom, accounts)
+        );
+      case 'accountTo':
+        return editMode === item.id ? (
+          <select
+            className="peer block w-full cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            value={(editedLine as Transfer)?.accountTo}
+            onChange={(e) =>
+              setEditedLine((prevEditedLine: Transfer | null) => {
+                if (prevEditedLine) {
+                  return {
+                    ...prevEditedLine,
+                    account: e.target.value,
+                  };
+                }
+                return null;
+              })
+            }
+          >
+            <option value="" disabled></option>
+            {accounts.map((acc) => (
+              <option key={acc.id} value={acc.id}>
+                {acc.name}
+              </option>
+            ))}
+          </select>
+        ) : (
+          getDescFromAccount((item as Transfer).accountTo, accounts)
         );
       case 'category':
         return editMode === item.id ? (

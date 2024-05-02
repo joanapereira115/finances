@@ -1,4 +1,11 @@
 import '@/app/ui/global.css';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Finanças',
+  description:
+    'Gestor Finanças Pessoais',
+};
 
 export default function RootLayout({
   children,

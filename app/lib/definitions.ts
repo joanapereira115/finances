@@ -19,6 +19,16 @@ export type Income = {
   account: string;
 };
 
+export type Transfer = {
+  id: string;
+  name: string;
+  date: string;
+  year: number;
+  value: number;
+  accountFrom: string;
+  accountTo: string;
+};
+
 export type History = {
   id: string;
   name: string;
