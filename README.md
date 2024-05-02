@@ -50,7 +50,7 @@ Quando o utilizador introduz o PIN corretamente é redirecionado para a página 
 
 Aqui é possível observar a barra de navegação lateral que permite ao utilizador navegar entre a diferente informação:
 
-<img align="left" style="padding-right: 30px; padding-bottom: 15px;" alt="Barra de navegação lateral"  height="400" src="prints/sidebar.jpeg">
+<img align="left" style="padding-right: 40px; padding-bottom: 15px;" alt="Barra de navegação lateral"  height="400" src="prints/sidebar.jpeg">
 
 * 1 - Página Inicial
 * 2 - Despesas
@@ -62,7 +62,7 @@ Aqui é possível observar a barra de navegação lateral que permite ao utiliza
 * 8 - Logout  
 
 <br><br><br><br><br><br><br><br><br><br><br>
-Nesta página é possível observar vária informação:
+Nesta página é possível observar:
 
 ![Página Inicial - Secções](prints/dashboard_sections.png)
 
