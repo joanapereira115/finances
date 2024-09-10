@@ -35,7 +35,7 @@ export default function Page() {
   }, [pin, router]);
 
   return (
-    <div className="grid w-full grid-cols-[65.5%_32.5%] gap-2">
+    <div className="grid w-full grid-cols-[68.5%_29%] gap-4">
       <Suspense>
         <div>
           <ExpensesByCatg expenses={expensesByCatg} />

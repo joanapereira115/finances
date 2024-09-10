@@ -12,11 +12,11 @@ export default function ExpensesByCatg({
 
   return (
     <div className="mx-4 mt-4 flex justify-center h-[84vh] rounded-xl bg-white p-2 drop-shadow-md">
-      <div className="w-full overflow-scroll align-middle ">
-        <table>
+      <div className="w-full overflow-scroll align-middle">
+        <table className='w-full table-fixed'>
           <thead className="text-left text-sm font-normal">
             <tr className="border-b">
-              <th scope="col" className="px-3 py-3 font-bold">
+              <th scope="col" className="px-3 py-3 w-32 font-bold">
                 Categoria
               </th>
               {monthList.map((month) => (

@@ -93,7 +93,7 @@ export default function YearCatg({ expenses }: { expenses: ExpensesByCat[] }) {
       <div className="text-center overflow-x-hidden overflow-y-hidden">
         <h2 className="m-2 text-lg font-bold">Despesas por categoria</h2>
         <div className="flex items-center justify-center">
-          <Pie className='scale-75 translate-y-[-2.75rem]' data={data} options={options} />
+          <Pie className='scale-[.85] translate-y-[-1rem]' data={data} options={options} />
         </div>
       </div>
     </div>
