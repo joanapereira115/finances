@@ -7,14 +7,13 @@ import { selectedPin } from '@/app/store/pin-context';
 
 import {
   AccountsBalanceSkeleton,
-  BalanceSkeleton,
-  HistoricSkeleton,
+  BalancesSkeleton,
   MonthlyBalanceSkeleton,
 } from '@/app/ui/skeletons';
-import Historic from '@/app/ui/dashboard/Historic';
 import MonthlyBalance from '@/app/ui/dashboard/MonthlyBalance';
 import Balance from '@/app/ui/dashboard/Balance';
 import AccountsBalance from '@/app/ui/dashboard/AccountsBalance';
+import Balances from '@/app/ui/dashboard/Balances';
 
 export default async function Page() {
   const router = useRouter();
@@ -28,22 +27,23 @@ export default async function Page() {
   }, [router, pin]);
 
   return (
-    <div className="grid w-full grid-cols-[60%_38%] gap-4">
+    <div className="mt-4 h-full w-full">
       <div>
-        <Suspense fallback={<HistoricSkeleton />}>
-          <Historic />
-        </Suspense>
-        <Suspense fallback={<MonthlyBalanceSkeleton />}>
-          <MonthlyBalance />
+        <Suspense fallback={<BalancesSkeleton />}>
+          <Balances />
         </Suspense>
       </div>
-      <div>
-        <Suspense fallback={<BalanceSkeleton />}>
-          <Balance />
-        </Suspense>
-        <Suspense fallback={<AccountsBalanceSkeleton />}>
-          <AccountsBalance />
-        </Suspense>
+      <div className="mb-4 mt-4 flex h-full w-full flex-row gap-4">
+        <div className="w-[60%]">
+          <Suspense fallback={<MonthlyBalanceSkeleton />}>
+            <MonthlyBalance />
+          </Suspense>
+        </div>
+        <div className="w-[40%]">
+          <Suspense fallback={<AccountsBalanceSkeleton />}>
+            <AccountsBalance />
+          </Suspense>
+        </div>
       </div>
     </div>
   );

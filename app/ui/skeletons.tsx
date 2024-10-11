@@ -1,59 +1,39 @@
 // Loading animation
 const shimmer =
-  'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/60 before:to-transparent';
-
-export function HistorySkeleton() {
-  return (
-    <div className="flex flex-row items-center justify-between p-2">
-      <div className="flex w-full items-center">
-        <div className="mr-4 h-[18px] w-[18px] rounded-full bg-white" />
-        <div className="h-4 w-40 rounded-md bg-white" />
-      </div>
-      <div className="h-4 w-24 rounded-md bg-white" />
-    </div>
-  );
-}
-
-export function HistoricSkeleton() {
-  return (
-    <div
-      className={`${shimmer} relative ml-4 mt-4 flex h-[30vh] grow flex-col justify-between overflow-hidden rounded-xl bg-gray-100 p-4`}
-    >
-      <HistorySkeleton />
-      <HistorySkeleton />
-      <HistorySkeleton />
-      <HistorySkeleton />
-      <HistorySkeleton />
-    </div>
-  );
-}
+  'before:absolute before:inset-0 before:-translate-x-full before:animate-[shimmer_2s_infinite] before:bg-gradient-to-r before:from-transparent before:via-white/10 before:to-transparent';
 
 export function MonthlyBalanceSkeleton() {
   return (
     <div
-      className={`${shimmer} relative ml-4 mt-4 flex h-[52vh] grow flex-col justify-between overflow-hidden rounded-xl bg-gray-100 p-4`}
+      className={`${shimmer} bg-black-600 relative ml-4 flex h-[62vh] flex-col items-center overflow-hidden rounded-xl p-4 drop-shadow-md`}
     >
-      <div className="grid h-full grid-cols-12 items-end gap-2 rounded-md bg-white p-4" />
-      <div className="flex items-center pb-2 pt-6">
-        <div className="mx-2 h-4 w-full rounded-md bg-white" />
-      </div>
+      <div className="bg-black-800 grid h-full w-full grid-cols-12 items-end gap-2 rounded-md p-4" />
     </div>
   );
 }
 
-export function BalanceSkeleton() {
+export function BalancesSkeleton() {
   return (
-    <div
-      className={`${shimmer} relative mr-2 mt-4 flex h-[38vh] grow flex-col justify-between overflow-hidden rounded-xl bg-gray-100 p-4`}
-    >
-      <div className="flex items-center pb-2 pt-2">
-        <div className="mx-12 h-6 w-full rounded-md bg-white" />
+    <div className="mx-4 flex h-[20vh] flex-row justify-between gap-4">
+      <div
+        className={`${shimmer} bg-black-600 relative h-full w-[20%] overflow-y-auto overflow-x-hidden rounded-xl drop-shadow-md`}
+      >
+        <div className="flex h-full items-center justify-center">
+          <div className="border-black-800 h-32 w-32 rounded-full border-[17px]"></div>
+        </div>
       </div>
-
-      <div className="mb-4 mt-2 flex items-center justify-center">
-        <div className="h-32 w-32 rounded-full border-[17px] border-white"></div>
-      </div>
-      <div className="grid h-full grid-cols-12 items-end gap-2 rounded-md bg-white p-4" />
+      <div
+        className={`${shimmer} bg-black-600 relative h-full w-[20%] overflow-y-auto overflow-x-hidden rounded-xl drop-shadow-md `}
+      ></div>
+      <div
+        className={`${shimmer} bg-black-600 relative h-full w-[20%] overflow-y-auto overflow-x-hidden rounded-xl drop-shadow-md `}
+      ></div>
+      <div
+        className={`${shimmer} bg-black-600 relative h-full w-[20%] overflow-y-auto overflow-x-hidden rounded-xl drop-shadow-md `}
+      ></div>
+      <div
+        className={`${shimmer} bg-black-600 relative h-full w-[20%] overflow-y-auto overflow-x-hidden rounded-xl drop-shadow-md `}
+      ></div>
     </div>
   );
 }
@@ -62,10 +42,10 @@ export function AccountSkeleton() {
   return (
     <div className="flex flex-row items-center justify-center p-2">
       <div className="flex w-full items-center">
-        <div className="mr-8 h-[40px] w-[40px] rounded-full bg-white" />
+        <div className="bg-black-800 mr-8 h-[40px] w-[40px] rounded-full" />
         <div>
-          <div className="m-2 h-4 w-40 rounded-md bg-white" />
-          <div className="m-2 h-4 w-24 rounded-md bg-white" />
+          <div className="bg-black-800 m-2 h-4 w-40 rounded-md" />
+          <div className="bg-black-800 m-2 h-4 w-24 rounded-md" />
         </div>
       </div>
     </div>
@@ -75,12 +55,11 @@ export function AccountSkeleton() {
 export function AccountsBalanceSkeleton() {
   return (
     <div
-      className={`${shimmer} relative mr-2 mt-4 flex h-[44vh] grow flex-col justify-between overflow-hidden rounded-xl bg-gray-100 p-4`}
+      className={`${shimmer} bg-black-600 relative mr-4 flex h-[62vh] flex-col justify-between overflow-hidden rounded-xl p-4`}
     >
-      <AccountSkeleton />
-      <AccountSkeleton />
-      <AccountSkeleton />
-      <AccountSkeleton />
+      {[...Array(6)].map((_, i) => (
+        <AccountSkeleton key={`account${i}`} />
+      ))}
     </div>
   );
 }
@@ -123,32 +102,16 @@ let accountsColumns = [
 
 export function ExpenseTableRowSkeleton() {
   return (
-    <tr className="mt-2 border-b">
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-6 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-white"></div>
-      </td>
+    <tr className="mt-2 border-b border-gray-500 last-of-type:border-none">
+      {[...Array(7)].map((_, i) => (
+        <td key={`expenseRow${i}`} className="whitespace-nowrap px-3 py-3">
+          <div className="bg-black-800 w-30 h-6 rounded"></div>
+        </td>
+      ))}
       <td className="whitespace-nowrap py-3 pl-6 pr-3">
         <div className="flex justify-end gap-3">
-          <div className="h-6 w-6 rounded bg-white"></div>
-          <div className="h-6 w-6 rounded bg-white"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
         </div>
       </td>
     </tr>
@@ -158,11 +121,11 @@ export function ExpenseTableRowSkeleton() {
 export function ExpensesTableSkeleton() {
   return (
     <div
-      className={`${shimmer} relative mt-4 overflow-hidden rounded-xl bg-gray-100 p-2`}
+      className={`${shimmer} bg-black-600 relative overflow-hidden rounded-xl p-2`}
     >
       <div className="inline-block min-w-[99%] align-middle">
         <table className="w-full">
-          <thead className="text-left text-sm font-normal">
+          <thead className="text-left text-sm font-normal text-white">
             <tr className="border-b">
               {expensesColumns?.map((col) => (
                 <th key={col.id} className="px-3 py-3 font-bold">
@@ -172,16 +135,9 @@ export function ExpensesTableSkeleton() {
             </tr>
           </thead>
           <tbody className="w-full align-middle">
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
-            <ExpenseTableRowSkeleton />
+            {[...Array(10)].map((_, i) => (
+              <ExpenseTableRowSkeleton key={`expense${i}`} />
+            ))}
           </tbody>
         </table>
       </div>
@@ -191,23 +147,16 @@ export function ExpensesTableSkeleton() {
 
 export function IncomeTableRowSkeleton() {
   return (
-    <tr className="mt-2 border-b">
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
+    <tr className="mt-2 border-b border-gray-500 last-of-type:border-none">
+      {[...Array(4)].map((_, i) => (
+        <td className="whitespace-nowrap px-3 py-3" key={`incomeRow${i}`}>
+          <div className="bg-black-800 h-6 w-32 rounded"></div>
+        </td>
+      ))}
       <td className="whitespace-nowrap py-3 pl-6 pr-3">
         <div className="flex justify-end gap-3">
-          <div className="h-6 w-6 rounded bg-white"></div>
-          <div className="h-6 w-6 rounded bg-white"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
         </div>
       </td>
     </tr>
@@ -217,11 +166,11 @@ export function IncomeTableRowSkeleton() {
 export function IncomeTableSkeleton() {
   return (
     <div
-      className={`${shimmer} relative mt-4 overflow-hidden rounded-xl bg-gray-100 p-2`}
+      className={`${shimmer} bg-black-600 relative overflow-hidden rounded-xl p-2`}
     >
       <div className="inline-block min-w-[99%] align-middle">
         <table className="w-full">
-          <thead className="text-left text-sm font-normal">
+          <thead className="text-left text-sm font-normal text-white">
             <tr className="border-b">
               {incomeColumns?.map((col) => (
                 <th key={col.id} className="px-3 py-3 font-bold">
@@ -231,16 +180,9 @@ export function IncomeTableSkeleton() {
             </tr>
           </thead>
           <tbody className="w-full align-middle">
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
-            <IncomeTableRowSkeleton />
+            {[...Array(10)].map((_, i) => (
+              <IncomeTableRowSkeleton key={`income${i}`} />
+            ))}
           </tbody>
         </table>
       </div>
@@ -250,26 +192,16 @@ export function IncomeTableSkeleton() {
 
 export function TransferTableRowSkeleton() {
   return (
-    <tr className="mt-2 border-b">
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
+    <tr className="mt-2 border-b border-gray-500 last-of-type:border-none">
+      {[...Array(5)].map((_, i) => (
+        <td className="whitespace-nowrap px-3 py-3" key={`transferRow${i}`}>
+          <div className="bg-black-800 h-6 w-32 rounded"></div>
+        </td>
+      ))}
       <td className="whitespace-nowrap py-3 pl-6 pr-3">
         <div className="flex justify-end gap-3">
-          <div className="h-6 w-6 rounded bg-white"></div>
-          <div className="h-6 w-6 rounded bg-white"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
         </div>
       </td>
     </tr>
@@ -279,11 +211,11 @@ export function TransferTableRowSkeleton() {
 export function TransferTableSkeleton() {
   return (
     <div
-      className={`${shimmer} relative mt-4 overflow-hidden rounded-xl bg-gray-100 p-2`}
+      className={`${shimmer} bg-black-600 relative overflow-hidden rounded-xl p-2`}
     >
       <div className="inline-block min-w-[99%] align-middle">
         <table className="w-full">
-          <thead className="text-left text-sm font-normal">
+          <thead className="text-left text-sm font-normal text-white">
             <tr className="border-b">
               {transferColumns?.map((col) => (
                 <th key={col.id} className="px-3 py-3 font-bold">
@@ -293,16 +225,9 @@ export function TransferTableSkeleton() {
             </tr>
           </thead>
           <tbody className="w-full align-middle">
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
-            <TransferTableRowSkeleton />
+            {[...Array(10)].map((_, i) => (
+              <TransferTableRowSkeleton key={`transfer${i}`} />
+            ))}
           </tbody>
         </table>
       </div>
@@ -312,23 +237,16 @@ export function TransferTableSkeleton() {
 
 export function AccountTableRowSkeleton() {
   return (
-    <tr className="mt-2 border-b">
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-16 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-32 rounded bg-white"></div>
-      </td>
-      <td className="whitespace-nowrap px-3 py-3">
-        <div className="h-6 w-6 rounded bg-white"></div>
-      </td>
+    <tr className="mt-2 border-b border-gray-500 last-of-type:border-none">
+      {[...Array(4)].map((_, i) => (
+        <td className="whitespace-nowrap px-3 py-3" key={`accountRow${i}`}>
+          <div className="bg-black-800 h-6 w-32 rounded"></div>
+        </td>
+      ))}
       <td className="whitespace-nowrap py-3 pl-6 pr-3">
         <div className="flex justify-end gap-3">
-          <div className="h-6 w-6 rounded bg-white"></div>
-          <div className="h-6 w-6 rounded bg-white"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
+          <div className="bg-black-800 h-6 w-6 rounded"></div>
         </div>
       </td>
     </tr>
@@ -338,11 +256,11 @@ export function AccountTableRowSkeleton() {
 export function AccountsTableSkeleton() {
   return (
     <div
-      className={`${shimmer} relative mt-4 overflow-hidden rounded-xl bg-gray-100 p-2`}
+      className={`${shimmer} bg-black-600 relative overflow-hidden rounded-xl p-2`}
     >
       <div className="inline-block min-w-[99%] align-middle">
         <table className="w-full">
-          <thead className="text-left text-sm font-normal">
+          <thead className="text-left text-sm font-normal text-white">
             <tr className="border-b">
               {accountsColumns?.map((col) => (
                 <th key={col.id} className="px-3 py-3 font-bold">
@@ -352,16 +270,9 @@ export function AccountsTableSkeleton() {
             </tr>
           </thead>
           <tbody className="w-full align-middle">
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
-            <AccountTableRowSkeleton />
+            {[...Array(10)].map((_, i) => (
+              <AccountTableRowSkeleton key={`account${i}`} />
+            ))}
           </tbody>
         </table>
       </div>

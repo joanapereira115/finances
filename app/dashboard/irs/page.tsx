@@ -33,10 +33,10 @@ export default function Page() {
   }, [pin, year, updated]);
 
   return (
-    <div className="grid w-full grid-cols-[32%_65.5%] gap-4">
-      <div>
+    <div className="mt-4 flex w-full">
+      <div className="mx-4 w-[30%]">
         <IRSForm irsData={irsData} updateHandler={setUpdated} />
-        <p className="m-4 text-gray-200 text-sm">
+        <p className="m-4 text-sm text-gray-200">
           <i>
             * Esta simulação não contempla todas situações existentes para o
             cálculo do valor do IRS a pagar ou receber, e por isso não deve ser
@@ -45,7 +45,7 @@ export default function Page() {
           </i>
         </p>
       </div>
-      <div>
+      <div className="mr-4 w-[70%]">
         <IRS irsData={irsData} />
       </div>
     </div>

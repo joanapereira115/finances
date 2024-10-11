@@ -14,29 +14,30 @@ export default function TopCatg({ expenses }: { expenses: ExpensesByCat[] }) {
   );
 
   const backgroundColor = [
-    '#BAEBFF',
-    '#BBDBFE',
-    '#BCCBFD',
+    '#d264b6',
+    '#de81f6',
+    '#cfa8e7',
     '#BEBCFC',
     '#BFACFB',
     '#C09CFA',
     '#C18CF9',
+    '#a480cf',
     '#AC8BEE',
     '#916DD5',
     '#7151A9',
     '#573D7F',
-    '#46325D',
-    '#2c0735',
-    '#051923',
-    '#003554',
-    '#006494',
+    '#BAEBFF',
+    '#BBDBFE',
+    '#BCCBFD',
+    '#21afd5',
     '#0582ca',
     '#00a6fb',
     '#5aa9e6',
     '#7fc8f8',
     '#779be7',
-    '#a480cf',
-    '#d264b6',
+    '#051923',
+    '#003554',
+    ,
   ];
 
   let totalByCatg = expenseCategories.map((exp, i) => {
@@ -57,15 +58,15 @@ export default function TopCatg({ expenses }: { expenses: ExpensesByCat[] }) {
   const topCatg = totalByCatg.splice(0, 5);
 
   return (
-    <div className="mt-4 flex h-[32vh] items-center justify-center rounded-xl bg-white p-2 drop-shadow-md">
+    <div className="mt-4 flex h-[32vh] items-center justify-center rounded-xl bg-black-600 text-white p-2 drop-shadow-md">
       <div className="overflow-hidden text-center ">
         <h2 className="m-2 text-lg font-bold">
           Categorias com maiores despesas
         </h2>
         {topCatg.map((cat, i) => (
-          <div key={cat.cat} className="border-b last-of-type:border-none">
+          <div key={cat.cat} className="border-b border-gray-500 last-of-type:border-none">
             <p className="flex justify-between py-2">
-              <span className="w-[20%] font-bold text-white">
+              <span className="w-[20%] font-bold">
                 <span
                   style={{ backgroundColor: cat.color }}
                   className={clsx(

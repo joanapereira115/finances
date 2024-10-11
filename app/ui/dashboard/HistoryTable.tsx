@@ -14,7 +14,7 @@ export default function HistoryTable({ history }: { history: History[] }) {
   return (
     <div
       className={clsx(
-        'ml-4 mt-4 flex h-[30vh] grow flex-col rounded-xl bg-white p-4 drop-shadow-md',
+        'ml-4 mt-4 flex h-[30vh] grow flex-col rounded-xl bg-black-600 text-white p-4 drop-shadow-md',
         {
           'justify-between': history?.length === 5,
         },

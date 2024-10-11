@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import Image from 'next/image';
 
 import Year from '@/app/ui/dashboard/Year';
 import Title from '@/app/ui/dashboard/Title';
@@ -25,15 +24,8 @@ export default function TopBar() {
   }, [pin]);
 
   return (
-    <div className="sticky h-[12vh] w-full bg-gradient-to-r from-lilac-800 to-lilac-100 drop-shadow-md">
-      <div className="mr-4 flex h-full flex-row items-center">
-        <Image
-          className="ml-4 rotate-45 drop-shadow-md"
-          src="/logo.png"
-          width={65}
-          height={65}
-          alt="Logo"
-        />
+    <div className="bg-black-800 fixed h-[100px]" style={{ width: 'calc(100% - 100px)' }}>
+      <div className="mr-5 flex h-full flex-row items-center">
         <Title />
         <div className="ml-auto">
           <Year years={years} />

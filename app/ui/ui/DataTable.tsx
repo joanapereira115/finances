@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState, Dispatch, SetStateAction, useEffect } from 'react';
 import { clsx } from 'clsx';
 import {
   CheckIcon,
@@ -8,6 +8,7 @@ import {
   PencilIcon,
   TrashIcon,
   NoSymbolIcon,
+  ArrowsUpDownIcon,
 } from '@heroicons/react/24/outline';
 
 import {
@@ -34,6 +35,7 @@ function getDescFromAccountType(type: string) {
 
 export default function DataTable({
   items,
+  page,
   columns,
   accounts,
   updateHandler,
@@ -43,6 +45,7 @@ export default function DataTable({
   pin,
 }: {
   items: (Expense | Income | Account | Transfer)[];
+  page: string;
   columns: Column[];
   accounts: Account[];
   updateHandler: (
@@ -55,11 +58,63 @@ export default function DataTable({
   type: string;
   pin: string;
 }) {
+  const [filteredItems, setFilteredItems] = useState<
+    (Expense | Income | Account | Transfer)[]
+  >([]);
+  const [sortedItems, setSortedItems] = useState<
+    (Expense | Income | Account | Transfer)[]
+  >([]);
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: 'asc' | 'desc';
+  } | null>(null);
   const [editMode, setEditMode] = useState<string | null>(null);
   const [editedLine, setEditedLine] = useState<
     Expense | Income | Account | Transfer | null
   >(null);
   let disable = false;
+
+  const filterAndSortItems = () => {
+    if (sortConfig !== null) {
+      switch (sortConfig.key) {
+        case 'value' || 'balance':
+          sortedItems.sort((a, b) => {
+            if (+a[sortConfig.key] < +b[sortConfig.key]) {
+              return sortConfig.direction === 'asc' ? -1 : 1;
+            }
+            if (+a[sortConfig.key] > +b[sortConfig.key]) {
+              return sortConfig.direction === 'asc' ? 1 : -1;
+            }
+            return 0;
+          });
+          break;
+        default:
+          sortedItems.sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key]) {
+              return sortConfig.direction === 'asc' ? -1 : 1;
+            }
+            if (a[sortConfig.key] > b[sortConfig.key]) {
+              return sortConfig.direction === 'asc' ? 1 : -1;
+            }
+            return 0;
+          });
+      }
+    }
+
+    const indexInit = (+page - 1) * 10;
+    let filtered = [...sortedItems.slice(indexInit, indexInit + 10)];
+    setFilteredItems(filtered);
+  };
+
+  useEffect(() => {
+    filterAndSortItems();
+  }, [sortConfig, sortedItems]);
+
+  useEffect(() => {
+    const indexInit = (+page - 1) * 10;
+    setSortedItems(items);
+    setFilteredItems([...items.slice(indexInit, indexInit + 10)]);
+  }, [items, page]);
 
   if (type === 'account') {
     if (!(editedLine as Account)?.name || !(editedLine as Account)?.type) {
@@ -88,6 +143,18 @@ export default function DataTable({
       disable = true;
     }
   }
+
+  const handleSort = (column: string) => {
+    let direction: 'asc' | 'desc' = 'asc';
+    if (
+      sortConfig &&
+      sortConfig.key === column &&
+      sortConfig.direction === 'asc'
+    ) {
+      direction = 'desc';
+    }
+    setSortConfig({ key: column, direction });
+  };
 
   function getDescFromAccount(id: string, accounts: Account[]) {
     let accountsCopy = [...accounts];
@@ -129,7 +196,7 @@ export default function DataTable({
         className={clsx(
           editMode
             ? 'pointer-events-none rounded-md border p-1 opacity-40 hover:bg-gray-100'
-            : 'pointer-events-auto rounded-md border p-1 hover:bg-gray-100',
+            : 'hover:text-black-600 rounded-md border p-1 hover:cursor-pointer hover:bg-gray-100',
         )}
       >
         <PencilIcon className="w-4" />
@@ -144,7 +211,7 @@ export default function DataTable({
           className={clsx(
             editMode || !active
               ? 'pointer-events-none rounded-md border p-1 opacity-40 hover:bg-gray-100'
-              : 'rounded-md border p-1 hover:bg-gray-100',
+              : 'hover:text-black-600 rounded-md border p-1 hover:bg-gray-100',
           )}
         >
           <span className="sr-only">Delete</span>
@@ -165,7 +232,7 @@ export default function DataTable({
           className={clsx(
             disable
               ? 'pointer-events-none rounded-md border p-1 opacity-40 hover:bg-gray-100'
-              : 'rounded-md border p-1 hover:bg-gray-100',
+              : 'hover:text-black-600 rounded-md border p-1 hover:bg-gray-100',
           )}
           disabled={disable}
         >
@@ -179,7 +246,7 @@ export default function DataTable({
     return (
       <div
         onClick={exitEditing}
-        className="rounded-md border p-1 hover:bg-gray-100"
+        className="hover:text-black-600 rounded-md border p-1 hover:bg-gray-100"
       >
         <XMarkIcon className="w-4" />
       </div>
@@ -195,7 +262,7 @@ export default function DataTable({
         return editMode === item.id ? (
           <input
             type="text"
-            className="w-full rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 w-full rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={editedLine?.name}
             onChange={(e) =>
               setEditedLine(
@@ -228,7 +295,7 @@ export default function DataTable({
         return editMode === item.id ? (
           <input
             type="date"
-            className="w-full rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 w-full rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Expense | Income)?.date}
             onChange={(e) =>
               setEditedLine(
@@ -257,7 +324,7 @@ export default function DataTable({
             type="number"
             min={0.0}
             step="0.01"
-            className="peer block w-full rounded-md border border-gray-200 text-sm outline-2"
+            className="bg-black-600 peer block w-full rounded-md border border-white text-sm outline-2"
             value={(editedLine as Expense | Income | Transfer)?.value}
             onChange={(e) =>
               setEditedLine(
@@ -284,7 +351,7 @@ export default function DataTable({
             type="number"
             min={0.0}
             step="0.01"
-            className="w-full rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 w-full rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Account)?.balance}
             onChange={(e) =>
               setEditedLine((prevEditedLine: Account | null) => {
@@ -312,7 +379,7 @@ export default function DataTable({
       case 'account':
         return editMode === item.id ? (
           <select
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 peer block w-full cursor-pointer rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Expense | Income)?.account}
             onChange={(e) =>
               setEditedLine(
@@ -341,7 +408,7 @@ export default function DataTable({
       case 'accountFrom':
         return editMode === item.id ? (
           <select
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 peer block w-full cursor-pointer rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Transfer)?.accountFrom}
             onChange={(e) =>
               setEditedLine((prevEditedLine: Transfer | null) => {
@@ -368,7 +435,7 @@ export default function DataTable({
       case 'accountTo':
         return editMode === item.id ? (
           <select
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 peer block w-full cursor-pointer rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Transfer)?.accountTo}
             onChange={(e) =>
               setEditedLine((prevEditedLine: Transfer | null) => {
@@ -395,7 +462,7 @@ export default function DataTable({
       case 'category':
         return editMode === item.id ? (
           <select
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 peer block w-full cursor-pointer rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Expense)?.category}
             onChange={(e) =>
               setEditedLine(
@@ -424,7 +491,7 @@ export default function DataTable({
       case 'type':
         return editMode === item.id ? (
           <select
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 peer block w-full cursor-pointer rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Account)?.type}
             onChange={(e) =>
               setEditedLine(
@@ -462,7 +529,7 @@ export default function DataTable({
         return editMode === item.id ? (
           <input
             type="checkbox"
-            className="peer block rounded-md border border-gray-200 py-2 text-lg outline-2"
+            className="bg-black-600 peer block rounded-md border border-white py-2 text-lg outline-2"
             checked={(editedLine as Expense)?.nif}
             onChange={(e) =>
               setEditedLine(
@@ -487,7 +554,7 @@ export default function DataTable({
         return editMode === item.id ? (
           <input
             type="checkbox"
-            className="peer block rounded-md border border-gray-200 py-2 text-lg outline-2"
+            className="bg-black-600 peer block rounded-md border border-white py-2 text-lg outline-2"
             checked={(editedLine as Account)?.active}
             onChange={(e) =>
               setEditedLine(
@@ -514,7 +581,7 @@ export default function DataTable({
             type="number"
             min={0.0}
             step="0.01"
-            className="w-full rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 w-full rounded-md border border-white text-sm outline-2 placeholder:text-gray-500"
             value={(editedLine as Expense)?.iva}
             onChange={(e) =>
               setEditedLine(
@@ -556,30 +623,44 @@ export default function DataTable({
   }
 
   return (
-    <div className="mt-4 rounded-xl bg-white p-2 drop-shadow-md">
+    <div className="bg-black-600 rounded-xl px-4 py-2 text-white drop-shadow-md">
       <div className="inline-block min-w-[99%] align-middle">
         <table className="w-full">
           <thead className="text-left text-sm font-normal">
             <tr className="border-b">
               {columns?.map((col: Column) => (
                 <th key={col.id} scope="col" className="px-3 py-3 font-bold">
-                  {col.name ? col.name : <span className="sr-only">Edit</span>}
+                  {col.name ? (
+                    <span className="flex items-center">
+                      {col.name}
+                      {col.sortable && (
+                        <span
+                          onClick={() => handleSort(col.id)}
+                          className="cursor-pointer p-1 hover:text-gray-100"
+                        >
+                          <ArrowsUpDownIcon className="w-4" />
+                        </span>
+                      )}
+                    </span>
+                  ) : (
+                    <span className="sr-only">Edit</span>
+                  )}
                 </th>
               ))}
               <th scope="col" className="relative"></th>
             </tr>
           </thead>
-          <tbody className="bg-white">
-            {items?.map((item: Expense | Income | Account) => (
+          <tbody className="">
+            {filteredItems?.map((item: Expense | Income | Account) => (
               <tr
                 key={item.id}
-                className="border-b py-2 text-sm last-of-type:border-none"
+                className="border-b border-gray-700 py-2 text-sm last-of-type:border-none"
               >
                 {columns?.map((col: Column) => {
                   return (
                     <td
                       key={`${item.id}${col.name}`}
-                      className="py-3 pl-3 pr-3"
+                      className="py-3 pl-2 pr-2"
                     >
                       {renderCell(item, col.id)}
                     </td>

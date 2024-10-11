@@ -2,7 +2,6 @@
 
 import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useSelector } from 'react-redux';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
 import { selectedPin } from '@/app/store/pin-context';
 import Pagination from '@/app/ui/ui/Pagination';
@@ -11,6 +10,7 @@ import { selectedYear } from '@/app/store/year-context';
 import { Account } from '@/app/lib/definitions';
 import TransferTable from '@/app/ui/transfers/TransferTable';
 import { fetchTransfers } from '@/app/lib/transfers';
+import EmptyData from '../ui/EmptyData';
 
 export default function Transfers({
   accounts,
@@ -39,23 +39,16 @@ export default function Transfers({
 
   const searchParams = useSearchParams();
   const page: string = searchParams.get('page') || '1';
-  const indexInit = (+page - 1) * 10;
 
   if (!transfers || transfers.length === 0) {
-    return (
-      <div className="mt-4 flex h-full flex-row items-center justify-center rounded-xl bg-white p-2 drop-shadow-md">
-        <ExclamationCircleIcon className="pointer-events-none mr-2 h-[24px] w-[24px] text-red-500" />
-        <p className="text-gray-400">Não foi encontrada informação.</p>
-      </div>
-    );
+    return <EmptyData />;
   }
 
-  const transfersPage = [...transfers.slice(indexInit, indexInit + 10)];
-
   return (
-    <div className="mt-4 justify-center">
+    <div className="justify-center">
       <TransferTable
-        transfers={transfersPage}
+        transfers={transfers}
+        page={page}
         accounts={accounts}
         pin={pin}
         transfersUpdate={updateHandler}

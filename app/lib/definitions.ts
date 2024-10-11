@@ -70,7 +70,7 @@ export type CalculatedIRS = {
   irsToReceive: number; // Valor a receber
   tax: number; // Taxa
   parcel: number; // Parcela a abater
-};  
+};
 
 export type MonthlyBalance = {
   month: number;
@@ -91,6 +91,7 @@ export type Balance = {
 export type Column = {
   id: string;
   name: string;
+  sortable: boolean;
 };
 
 export type ExpensesByCat = {

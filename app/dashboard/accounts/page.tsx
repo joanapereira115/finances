@@ -30,11 +30,11 @@ export default function Page() {
   }, [pin, router, updated]);
 
   return (
-    <div className="grid w-full grid-cols-[32%_65.5%] gap-4">
-      <div>
+    <div className="mt-4 flex w-full">
+      <div className="mx-4 w-[30%]">
         <AccountForm updateHandler={setUpdated} />
       </div>
-      <div>
+      <div className="mr-4 w-[70%]">
         <Suspense fallback={<AccountsTableSkeleton />}>
           <Accounts accounts={accounts} pin={pin} updateHandler={setUpdated} />
         </Suspense>

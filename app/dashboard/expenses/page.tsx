@@ -3,11 +3,13 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 
 import { selectedPin } from '@/app/store/pin-context';
 import ExpenseForm from '@/app/ui/expenses/ExpenseForm';
 import Expenses from '@/app/ui/expenses/Expenses';
 import { fetchAccounts } from '@/app/lib/accounts';
+import { ExpensesTableSkeleton } from '@/app/ui/skeletons';
 
 export default function Page() {
   const [accounts, setAccounts] = useState([]);
@@ -28,16 +30,18 @@ export default function Page() {
   }, [router, pin]);
 
   return (
-    <div className="grid w-full grid-cols-[32%_65.5%] gap-4">
-      <div>
+    <div className="mt-4 flex w-full">
+      <div className="mx-4 w-[30%]">
         <ExpenseForm accounts={accounts} updateHandler={setUpdated} />
       </div>
-      <div>
-        <Expenses
-          accounts={accounts}
-          updated={updated}
-          updateHandler={setUpdated}
-        />
+      <div className="mr-4 w-[70%]">
+        <Suspense fallback={<ExpensesTableSkeleton />}>
+          <Expenses
+            accounts={accounts}
+            updated={updated}
+            updateHandler={setUpdated}
+          />
+        </Suspense>
       </div>
     </div>
   );

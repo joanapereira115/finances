@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
 
 import { update } from '@/app/store/pin-context';
+import { setPriority } from 'os';
 
 export default function Pin({
   defined,
@@ -16,7 +17,8 @@ export default function Pin({
   validatePin: (pin: string) => {};
 }) {
   const [pin, setPin] = useState(['', '', '', '']);
-  const [error, setError] = useState(undefined);
+  const [pressedDigit, setPressedDigit] = useState<string | null>(null);
+  const [error, setError] = useState('');
   const dispatch = useDispatch();
   const { push } = useRouter();
 
@@ -26,6 +28,33 @@ export default function Pin({
   } else {
     title = 'Defina o seu PIN';
   }
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.key >= '0' && event.key <= '9') || event.key === 'Backspace') {
+        setPressedDigit(event.key);
+      }
+    };
+
+    // Add the event listener for keydown when the component mounts
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (pressedDigit) {
+      if (pressedDigit >= '0' && pressedDigit <= '9') {
+        handleDigitClick(pressedDigit);
+      } else if (pressedDigit === 'Backspace') {
+        handleBackspaceClick();
+      }
+      setPressedDigit('');
+    }
+  }, [pressedDigit]);
 
   useEffect(() => {
     const definePinHandler = async () => {
@@ -79,7 +108,7 @@ export default function Pin({
 
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
-      <div className="flex h-[50vh] w-[35%] flex-col items-center justify-center rounded-xl bg-white p-4 drop-shadow-md">
+      <div className="flex h-[50vh] w-[35%] flex-col items-center justify-center rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
         <h1 className="mb-2 text-center text-xl font-normal">{title}</h1>
         {error ? (
           <p className="pb-4 text-red-500">{error}</p>
@@ -91,9 +120,9 @@ export default function Pin({
             {pin.map((digit, index) => (
               <div key={index} className="text-center">
                 {digit != '' ? (
-                  <div className="h-3 w-3 rounded-full bg-black"></div>
+                  <div className="h-3 w-3 rounded-full bg-lilac-100"></div>
                 ) : (
-                  <div className="h-3 w-3 rounded-full border border-solid border-black"></div>
+                  <div className="h-3 w-3 rounded-full border border-solid border-lilac-100"></div>
                 )}
               </div>
             ))}

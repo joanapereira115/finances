@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 
 import { selectedPin } from '@/app/store/pin-context';
 import { selectedYear } from '@/app/store/year-context';
@@ -10,6 +9,7 @@ import { fetchMonthlyBalance } from '@/app/lib/data';
 
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
+import EmptyData from '../ui/EmptyData';
 Chart.register(...registerables);
 
 export default function MonthlyBalance() {
@@ -24,6 +24,11 @@ export default function MonthlyBalance() {
 
     getData();
   }, [pin, year]);
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+  };
 
   const data = {
     labels: [
@@ -45,33 +50,34 @@ export default function MonthlyBalance() {
         label: 'Rendimentos',
         data: monthlyBalance?.income,
         fill: false,
-        borderColor: 'rgb(134 239 172)',
+        borderColor: '#4ade80',
       },
       {
         label: 'Despesas',
         data: monthlyBalance?.expenses,
         fill: false,
-        borderColor: 'rgb(252 165 165)',
+        borderColor: '#f87171',
       },
       {
         label: 'Diferença',
         data: monthlyBalance?.difference,
         fill: false,
-        borderColor: 'rgb(147 197 253)',
+        borderColor: '#21afd5',
       },
     ],
   };
 
+  if (!monthlyBalance) {
+    return (
+      <div className="bg-black-600 ml-4 flex h-[62vh] items-center rounded-xl p-4 drop-shadow-md">
+        <EmptyData />
+      </div>
+    );
+  }
+
   return (
-    <div className="ml-4 mt-4 flex h-[52vh] grow flex-col justify-between rounded-xl bg-white p-4 drop-shadow-md">
-      {monthlyBalance ? (
-        <Line data={data} />
-      ) : (
-        <div className="flex h-full flex-row items-center justify-center p-2">
-          <ExclamationCircleIcon className="pointer-events-none mr-2 h-[24px] w-[24px] text-red-500" />
-          <p className="text-gray-400">Não foi encontrada informação.</p>
-        </div>
-      )}
+    <div className="bg-black-600 ml-4 flex h-[62vh] items-center rounded-xl p-4 drop-shadow-md">
+      <Line data={data} options={options} />
     </div>
   );
 }

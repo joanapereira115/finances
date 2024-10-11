@@ -51,7 +51,7 @@ export default function ExpenseForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="mx-4 mt-4 flex grow flex-col justify-between rounded-xl bg-white p-4 drop-shadow-md">
+      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
         <h2 className="text-lg font-bold">Nova Despesa</h2>
 
         <div className="relative mt-3 rounded-md">
@@ -61,11 +61,11 @@ export default function ExpenseForm({
               name="name"
               type="string"
               placeholder="Despesa"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="peer block w-full rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               onChange={(e) => setName(e.target.value)}
               required
             />
-            <TagIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <TagIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-white" />
           </div>
         </div>
 
@@ -77,9 +77,9 @@ export default function ExpenseForm({
               type="date"
               defaultValue={new Date().toDateString()}
               onChange={(e) => setDate(e.target.value)}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="peer block w-full rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             />
-            <CalendarDaysIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <CalendarDaysIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-white" />
           </div>
         </div>
 
@@ -87,7 +87,7 @@ export default function ExpenseForm({
           <select
             id="account"
             name="account"
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer block w-full cursor-pointer rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             defaultValue=""
             onChange={(e) => setAccount(e.target.value)}
             required
@@ -111,7 +111,7 @@ export default function ExpenseForm({
           <select
             id="category"
             name="category"
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer block w-full cursor-pointer rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             defaultValue=""
           >
             <option value="" disabled>
@@ -135,9 +135,9 @@ export default function ExpenseForm({
               min={0.0}
               step="0.01"
               placeholder="Valor"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="peer block w-full rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             />
-            <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-white" />
           </div>
         </div>
 
@@ -150,7 +150,7 @@ export default function ExpenseForm({
               id="nif"
               name="nif"
               type="checkbox"
-              className="peer block rounded-md border border-gray-200 py-2 text-lg outline-2"
+              className="peer block rounded-md border border-white bg-black-600 py-2 text-lg outline-2"
             />
           </div>
         </div>
@@ -163,14 +163,14 @@ export default function ExpenseForm({
             min={0.0}
             step="0.01"
             placeholder="Benefício IRS"
-            className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2"
+            className="peer block w-full rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2"
           />
-          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-white" />
         </div>
 
         <div className="mt-6 flex justify-end gap-4">
           <Button
-            className="bg-lilac-800 hover:scale-105"
+            className="bg-blue-600 hover:scale-105"
             type="button"
             onClick={onReset}
           >

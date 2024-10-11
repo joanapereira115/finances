@@ -4,23 +4,25 @@ import { deleteHandler, updateHandler } from '@/app/lib/actions';
 import DataTable from '../ui/DataTable';
 
 const columns: Column[] = [
-  { id: 'name', name: 'Descrição' },
-  { id: 'date', name: 'Data' },
-  { id: 'value', name: 'Valor' },
-  { id: 'account', name: 'Conta' },
-  { id: 'category', name: 'Categoria' },
-  { id: 'nif', name: 'Fatura?' },
-  { id: 'iva', name: 'IRS' },
-  { id: 'actions', name: '' },
+  { id: 'name', name: 'Descrição', sortable: true },
+  { id: 'date', name: 'Data', sortable: true },
+  { id: 'value', name: 'Valor', sortable: true },
+  { id: 'account', name: 'Conta', sortable: false },
+  { id: 'category', name: 'Categoria', sortable: false },
+  { id: 'nif', name: 'Fatura?', sortable: false },
+  { id: 'iva', name: 'IRS', sortable: false },
+  { id: 'actions', name: '', sortable: false },
 ];
 
 export default function ExpensesTable({
   expenses,
+  page,
   accounts,
   pin,
   expenseUpdate,
 }: {
   expenses: Expense[];
+  page: string;
   accounts: Account[];
   pin: string;
   expenseUpdate: Dispatch<SetStateAction<boolean>>;
@@ -28,6 +30,7 @@ export default function ExpensesTable({
   return (
     <DataTable
       items={expenses}
+      page={page}
       accounts={accounts}
       columns={columns}
       updateHandler={updateHandler}

@@ -1,8 +1,9 @@
 import { IRSDef, CalculatedIRS } from '@/app/lib/definitions';
-import { scale, youngIRS, types } from '@/app/lib/irsData';
+import { scale, youngIRS, types, specificDeduction } from '@/app/lib/irsData';
 
 let calculateIRS = (irsData: IRSDef) => {
-  let rendCol = +irsData.grossIncome - +4104;
+  let specDed = specificDeduction[irsData.year];
+  let rendCol = Number((+irsData.grossIncome - +specDed).toFixed(2));
   let scaleLine =
     scale[irsData.year]?.find(
       (item) => +rendCol >= +item.min && +rendCol <= +item.max,
@@ -67,9 +68,9 @@ export default function IRData({ irsData }: { irsData: IRSDef }) {
   let title = `Declaração ${type.description}`;
 
   return (
-    <div className="my-4 flex flex-col items-center justify-center rounded-xl bg-white p-2 drop-shadow-md">
+    <div className="bg-black-600 flex flex-col items-center justify-center rounded-xl p-4 text-white drop-shadow-md">
       <h2 className="text-lg font-bold">{title}</h2>
-      <h2 className="m-2 rounded-xl bg-white p-4 text-xl text-lilac-800 drop-shadow-md">
+      <h2 className="bg-black-800 m-2 rounded-xl border border-white p-3 text-xl drop-shadow-md">
         {calculatedIRS.irsToReceive}€
       </h2>
       <hr className="border-1 m-2 w-[50%]" />

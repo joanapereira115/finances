@@ -87,7 +87,7 @@ export default function IRSForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="mx-4 mt-4 flex grow flex-col justify-between rounded-xl bg-white p-4 drop-shadow-md">
+      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
         <h2 className="text-lg font-bold">Simulador IRS</h2>
 
         <div className="relative mt-3 rounded-md">
@@ -97,7 +97,7 @@ export default function IRSForm({
           <select
             id="type"
             name="type"
-            className="peer mt-1 w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer mt-1 w-full cursor-pointer rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             required
             onChange={(e) => setType(e.target.value)}
             value={type}
@@ -111,7 +111,7 @@ export default function IRSForm({
               </option>
             ))}
           </select>
-          <WalletIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500" />
+          <WalletIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500 peer-focus:text-white" />
         </div>
 
         <div className="relative mt-2 rounded-md">
@@ -126,10 +126,10 @@ export default function IRSForm({
             step="0.01"
             value={gross}
             placeholder="Rendimento Bruto Anual"
-            className="peer mt-1 block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer mt-1 block w-full rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             onChange={(e) => setGross(+e.target.value)}
           />
-          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500" />
+          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500 peer-focus:text-white" />
         </div>
 
         <div className="relative mt-2 rounded-md">
@@ -143,11 +143,11 @@ export default function IRSForm({
             min={0.0}
             step="0.01"
             placeholder="Retenção na Fonte"
-            className="peer mt-1 block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer mt-1 block w-full rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             onChange={(e) => setRetention(+e.target.value)}
             value={retention}
           />
-          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500" />
+          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500 peer-focus:text-white" />
         </div>
 
         <div className="relative mt-2 rounded-md">
@@ -157,7 +157,7 @@ export default function IRSForm({
           <select
             id="young"
             name="young"
-            className="peer mt-1 block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer mt-1 block w-full cursor-pointer rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             defaultValue=""
             required
             onChange={(e) => setYoung(e.target.value)}
@@ -170,7 +170,7 @@ export default function IRSForm({
               </option>
             ))}
           </select>
-          <WalletIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500" />
+          <WalletIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500 peer-focus:text-white" />
         </div>
 
         <div className="relative mt-3 rounded-md">
@@ -184,16 +184,16 @@ export default function IRSForm({
             min={0.0}
             step="0.01"
             placeholder="Deduções"
-            className="peer mt-1 block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="peer mt-1 block w-full rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             value={deduction}
             onChange={(e) => setDeduction(+e.target.value)}
           />
-          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500" />
+          <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-[2.3rem] h-[18px] w-[18px] text-gray-500 peer-focus:text-white" />
         </div>
 
         <div className="mt-6 flex justify-end gap-4">
           <Button
-            className="bg-lilac-800 hover:scale-105"
+            className="bg-blue-600 hover:scale-105"
             type="button"
             onClick={onReset}
           >

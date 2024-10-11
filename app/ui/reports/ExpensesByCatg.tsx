@@ -9,40 +9,106 @@ export default function ExpensesByCatg({
   expenses: ExpensesByCat[];
 }) {
   let monthList = Object.entries(months);
+  const currentMonth = new Date().getMonth();
+
+  const totalByCat = {};
+  const minMaxValues = {};
+  const averageByCat = {};
+
+  // Calculate totals and counts by category
+  expenses.forEach((item) => {
+    const { cat, month, value } = item;
+
+    if (!totalByCat[cat]) {
+      totalByCat[cat] = 0;
+    }
+
+    totalByCat[cat] += +value;
+
+    if (month >= currentMonth || value === 0) return;
+
+    if (!minMaxValues[cat]) {
+      minMaxValues[cat] = {
+        min: value,
+        max: value,
+      };
+    } else {
+      minMaxValues[cat].min = Math.min(minMaxValues[cat].min, +value);
+      minMaxValues[cat].max = Math.max(minMaxValues[cat].max, +value);
+    }
+  });
+
+  for (let cat in totalByCat) {
+    averageByCat[cat] = +totalByCat[cat] / +currentMonth;
+  }
 
   return (
-    <div className="mx-4 mt-4 flex justify-center h-[84vh] rounded-xl bg-white p-2 drop-shadow-md">
+    <div className="bg-black-600 h-[84vh] w-full justify-center overflow-scroll rounded-xl p-2 text-white drop-shadow-md">
       <div className="w-full overflow-scroll align-middle">
-        <table className='w-full table-fixed'>
+        <table className="w-full overflow-scroll">
           <thead className="text-left text-sm font-normal">
             <tr className="border-b">
-              <th scope="col" className="px-3 py-3 w-32 font-bold">
+              <th
+                scope="col"
+                className="bg-black-600 sticky left-0 px-3 py-3 font-bold"
+              >
                 Categoria
               </th>
               {monthList.map((month) => (
-                <th key={month[0]} scope="col" className="px-3 py-3 font-bold">
+                <th
+                  key={month[0]}
+                  scope="col"
+                  className="px-3 py-3 font-bold"
+                  style={{ minWidth: '80px' }}
+                >
                   {month[1]}
                 </th>
               ))}
-              <th scope="col" className="px-3 py-3 font-bold">
+              <th
+                scope="col"
+                className="px-3 py-3 font-bold"
+                style={{ minWidth: '80px' }}
+              >
                 Total
+              </th>
+              <th
+                scope="col"
+                className="px-3 py-3 font-bold"
+                style={{ minWidth: '80px' }}
+              >
+                Média
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white">
+          <tbody className="bg-black-600 text-white">
             {expenseCategories?.map((cat, index) => (
               <tr
                 key={cat.id}
-                className={clsx(
-                  'border-b py-2 text-sm last-of-type:border-none',
-                  {
-                    'bg-lilac-50 bg-opacity-20': +index % 2 === 0,
-                  },
-                )}
+                className="border-b border-gray-700 py-2 text-sm last-of-type:border-none"
               >
-                <td className="py-3 pl-3 pr-3">{cat.name}</td>
+                <td className="bg-black-600 sticky left-0 py-3 pl-3 pr-3 font-bold">
+                  {cat.name}
+                </td>
                 {monthList.map((month) => (
-                  <td key={month[0]} className="py-3 pl-3 pr-3">
+                  <td
+                    key={month[0]}
+                    className={clsx('py-3 pl-4 pr-4', {
+                      'font-bold text-lilac-100':
+                        expenses.find(
+                          (obj) =>
+                            +obj.month === +month[0] - 1 && obj.cat === cat.id,
+                        )?.value === minMaxValues[cat.id]?.min &&
+                        minMaxValues[cat.id]?.min !==
+                          minMaxValues[cat.id]?.max &&
+                        +month[0] <= currentMonth,
+                      'font-bold text-blue-600':
+                        expenses.find(
+                          (obj) =>
+                            +obj.month === +month[0] - 1 && obj.cat === cat.id,
+                        )?.value === minMaxValues[cat.id]?.max &&
+                        minMaxValues[cat.id]?.min !== minMaxValues[cat.id]?.max,
+                    })}
+                  >
                     {
                       expenses.find((obj) => {
                         return (
@@ -52,13 +118,11 @@ export default function ExpensesByCatg({
                     }
                   </td>
                 ))}
-                <td className="py-3 pl-3 pr-3">
-                  {expenses?.reduce((total: number, curr: ExpensesByCat) => {
-                    if (curr.cat === cat.id) {
-                      return Number(+total + +curr.value.toFixed(2));
-                    }
-                    return Number(total.toFixed(2));
-                  }, 0)}
+                <td className="py-3 pl-4 pr-4">
+                  {(+totalByCat[cat.id]).toFixed(2)}
+                </td>
+                <td className="py-3 pl-4 pr-4">
+                  {(+averageByCat[cat.id]).toFixed(2)}
                 </td>
               </tr>
             ))}

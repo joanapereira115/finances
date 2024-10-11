@@ -3,8 +3,6 @@
 import { useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useSelector } from 'react-redux';
 import { useSearchParams } from 'next/navigation';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import { Suspense } from 'react';
 
 import { selectedPin } from '@/app/store/pin-context';
 import { selectedYear } from '@/app/store/year-context';
@@ -12,7 +10,7 @@ import ExpensesTable from '@/app/ui/expenses/ExpensesTable';
 import Pagination from '@/app/ui/ui/Pagination';
 import { Account } from '@/app/lib/definitions';
 import { fetchExpenses } from '@/app/lib/expenses';
-import { ExpensesTableSkeleton } from '@/app/ui/skeletons';
+import EmptyData from '../ui/EmptyData';
 
 export default function Expenses({
   accounts,
@@ -41,32 +39,23 @@ export default function Expenses({
 
   const searchParams = useSearchParams();
   const page: string = searchParams.get('page') || '1';
-  const indexInit = (+page - 1) * 10;
 
   if (!expenses || expenses.length === 0) {
-    return (
-      <div className="mt-4 flex h-full flex-row items-center justify-center rounded-xl bg-white p-2 drop-shadow-md">
-        <ExclamationCircleIcon className="pointer-events-none mr-2 h-[24px] w-[24px] text-red-500" />
-        <p className="text-gray-400">Não foi encontrada informação.</p>
-      </div>
-    );
+    return <EmptyData />;
   }
 
-  const expensesPage = [...expenses.slice(indexInit, indexInit + 10)];
-
   return (
-    <Suspense fallback={<ExpensesTableSkeleton />}>
-      <div className="mt-4 justify-center">
-        <ExpensesTable
-          expenses={expensesPage}
-          accounts={accounts}
-          expenseUpdate={updateHandler}
-          pin={pin}
-        />
-        <div className="text-center">
-          <Pagination totalElems={expenses.length} page={page} />
-        </div>
+    <div className="justify-center">
+      <ExpensesTable
+        expenses={expenses}
+        page={page}
+        accounts={accounts}
+        expenseUpdate={updateHandler}
+        pin={pin}
+      />
+      <div className="text-center">
+        <Pagination totalElems={expenses.length} page={page} />
       </div>
-    </Suspense>
+    </div>
   );
 }

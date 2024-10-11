@@ -32,19 +32,20 @@ export default function Page() {
     } else {
       getData();
     }
-  }, [pin, router]);
+  }, [pin, router, year]);
 
   return (
-    <div className="grid w-full grid-cols-[68.5%_29%] gap-4">
-      <Suspense>
-        <div>
-          <ExpensesByCatg expenses={expensesByCatg} />
-        </div>
-        <div>
-          <YearCatg expenses={expensesByCatg} />
-          <TopCatg expenses={expensesByCatg} />
-        </div>
-      </Suspense>
+    <div className="mt-4 flex" style={{ width: 'calc(100% - 3rem)' }}>
+      <div
+        className="mx-4 grow-0"
+        style={{ width: 'calc(70% - 100px)' }}
+      >
+        <ExpensesByCatg expenses={expensesByCatg} />
+      </div>
+      <div className="mr-4 w-[30%]">
+        <YearCatg expenses={expensesByCatg} />
+        <TopCatg expenses={expensesByCatg} />
+      </div>
     </div>
   );
 }

@@ -5,7 +5,7 @@ const config: Config = {
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
     './app/**/*.{js,ts,jsx,tsx,mdx}',
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}"
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -14,15 +14,18 @@ const config: Config = {
       },
       colors: {
         blue: {
-          400: '#2589FE',
-          500: '#0070F3',
-          600: '#2F6FEB',
+          600: '#21afd5',
         },
         lilac: {
-          100: '#9A9CEA',
-          50: '#b4b5ed',
-          800: '#3C3F73'
-        }
+          100: '#cfa8e7',
+        },
+        pink: {
+          500: '#de81f6',
+        },
+        black: {
+          800: '#14171E',
+          600: '#191C25',
+        },
       },
     },
     keyframes: {

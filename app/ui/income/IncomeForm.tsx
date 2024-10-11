@@ -52,7 +52,7 @@ export default function IncomeForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="mx-4 mt-4 flex grow flex-col justify-between rounded-xl bg-white p-4 drop-shadow-md">
+      <div className="bg-black-600 flex grow flex-col justify-between rounded-xl p-4 text-white drop-shadow-md">
         <h2 className="text-lg font-bold">Novo Rendimento</h2>
 
         <div className="relative mt-3 rounded-md">
@@ -62,11 +62,11 @@ export default function IncomeForm({
               name="name"
               type="string"
               placeholder="Rendimento"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="bg-black-600 peer block w-full rounded-md border border-white py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
               required
               onChange={(e) => setName(e.target.value)}
             />
-            <TagIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <TagIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-white" />
           </div>
         </div>
 
@@ -77,9 +77,9 @@ export default function IncomeForm({
               name="date"
               type="date"
               defaultValue={new Date().toDateString()}
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="bg-black-600 peer block w-full rounded-md border border-white py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             />
-            <CalendarDaysIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <CalendarDaysIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-white" />
           </div>
         </div>
 
@@ -87,7 +87,7 @@ export default function IncomeForm({
           <select
             id="account"
             name="account"
-            className="peer block w-full cursor-pointer rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+            className="bg-black-600 peer block w-full cursor-pointer rounded-md border border-white py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             defaultValue=""
             required
             onChange={(e) => setAccount(e.target.value)}
@@ -116,15 +116,15 @@ export default function IncomeForm({
               min={0.0}
               step="0.01"
               placeholder="Valor"
-              className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
+              className="bg-black-600 peer block w-full rounded-md border border-white py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
             />
-            <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+            <CurrencyEuroIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-white" />
           </div>
         </div>
 
         <div className="mt-6 flex justify-end gap-4">
           <Button
-            className="bg-lilac-800 hover:scale-105"
+            className="bg-blue-600 hover:scale-105"
             type="button"
             onClick={onReset}
           >

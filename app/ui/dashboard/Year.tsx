@@ -26,7 +26,7 @@ export default function Year({
 
   return (
     <select
-      className="block cursor-pointer rounded-md border border-gray-200 text-sm outline-2 placeholder:text-gray-500"
+      className="block cursor-pointer rounded-md border bg-black-600 text-white text-sm outline-2 placeholder:text-white"
       value={year}
       onChange={(e) => dispatch(update(e.target.value as unknown as number))}
     >

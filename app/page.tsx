@@ -12,7 +12,7 @@ export default async function Page() {
   await initialize();
 
   return (
-    <div className="bg-lilac-50 flex h-[100vh] overflow-hidden">
+    <div className="bg-black-800 flex h-[100vh] overflow-hidden">
       <PinContextProvider>
         <Pin
           defined={defined}

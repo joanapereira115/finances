@@ -124,8 +124,9 @@ Nesta página é possível fazer uma simulaçáo do cálculo do valor do IRS. Es
 ![IRS](prints/irs.png)
 
 # TO DO:
+* Responsividade
 * Otimização do armazenamento dos dados
-* Ordenação e filtros nas tabelas
+* Filtros nas tabelas
 * Melhoria da simulação do IRS
 * Tradução EN
 * Animações

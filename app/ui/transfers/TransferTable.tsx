@@ -4,21 +4,23 @@ import DataTable from '../ui/DataTable';
 import { deleteHandler, updateHandler } from '@/app/lib/actions';
 
 const columns: Column[] = [
-  { id: 'name', name: 'Descrição' },
-  { id: 'date', name: 'Data' },
-  { id: 'value', name: 'Valor' },
-  { id: 'accountFrom', name: 'Da conta' },
-  { id: 'accountTo', name: 'Para a conta' },
-  { id: 'actions', name: '' },
+  { id: 'name', name: 'Descrição', sortable: true },
+  { id: 'date', name: 'Data', sortable: true },
+  { id: 'value', name: 'Valor', sortable: true },
+  { id: 'accountFrom', name: 'Da conta', sortable: false },
+  { id: 'accountTo', name: 'Para a conta', sortable: false },
+  { id: 'actions', name: '', sortable: false },
 ];
 
 export default function TransferTable({
   transfers,
+  page,
   accounts,
   pin,
   transfersUpdate,
 }: {
   transfers: Transfer[];
+  page: string;
   accounts: Account[];
   pin: string;
   transfersUpdate: Dispatch<SetStateAction<boolean>>;
@@ -26,6 +28,7 @@ export default function TransferTable({
   return (
     <DataTable
       items={transfers}
+      page={page}
       accounts={accounts}
       columns={columns}
       updateHandler={updateHandler}
