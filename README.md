@@ -49,34 +49,26 @@ Quando o utilizador introduz o PIN corretamente é redirecionado para a página 
 ![Página Inicial](prints/dashboard.png)
 
 Aqui é possível observar a barra de navegação lateral que permite ao utilizador navegar entre a diferente informação:
+* Página Inicial
+* Despesas
+* Rendimentos
+* Transferências
+* Contas
+* Relatórios
+* IRS
+* Logout  
 
-<img align="left" style="padding-right: 40px; padding-bottom: 15px;" alt="Barra de navegação lateral"  height="400" src="prints/sidebar.jpeg">
-
-* 1 - Página Inicial
-* 2 - Despesas
-* 3 - Rendimentos
-* 4 - Transferências
-* 5 - Contas
-* 6 - Relatórios
-* 7 - IRS
-* 8 - Logout  
-
-<br><br><br><br><br><br><br><br><br><br><br>
 Nesta página é possível observar:
 
-![Página Inicial - Secções](prints/dashboard_sections.png)
-
-* 1 - Página Inicial atualmente selecionada na navegação
-* 2 - Dropdown com a lista de valores correspondentes ao ano, sendo que a opção de ano selecionada implica que toda a informação apresentada na aplicação se refere a esse ano
-* 3 - Histórico com os 5 últimos movimentos (despesas e rendimentos)
-* 4 - Valores anuais:
+* No canto superior direito da página, uma dropdown com a lista de valores correspondentes ao ano, sendo que a opção de ano selecionada implica que toda a informação apresentada na aplicação se refere a esse ano
+* Valores anuais referentes ao ano selecionado:
     * Percentagem do rendimento gasto no ano selecionado
     * Valor total das contas registadas
-    * Valor total dos rendimentos do ano selecionado
-    * Valor total das despesas do ano selecionado
     * Diferença anual entre os rendimentos e as despesas
-* 5 - Gráfico mensal dos rendimentos, despesas e diferença
-* 6 - Contas registadas
+    * Valor total dos rendimentos desse ano
+    * Valor total das despesas desse ano
+* Gráfico mensal dos rendimentos, despesas e diferença
+* Contas registadas
 
 ## Despesas
 
