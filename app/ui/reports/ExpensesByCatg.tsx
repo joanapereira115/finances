@@ -15,7 +15,6 @@ export default function ExpensesByCatg({
   const minMaxValues = {};
   const averageByCat = {};
 
-  // Calculate totals and counts by category
   expenses.forEach((item) => {
     const { cat, month, value } = item;
 
@@ -25,7 +24,7 @@ export default function ExpensesByCatg({
 
     totalByCat[cat] += +value;
 
-    if (month >= currentMonth || value === 0) return;
+    if (month > currentMonth || value === 0) return;
 
     if (!minMaxValues[cat]) {
       minMaxValues[cat] = {
@@ -39,18 +38,18 @@ export default function ExpensesByCatg({
   });
 
   for (let cat in totalByCat) {
-    averageByCat[cat] = +totalByCat[cat] / +currentMonth;
+    averageByCat[cat] = +totalByCat[cat] / (+currentMonth + 1);
   }
 
   return (
-    <div className="bg-black-600 h-[84vh] w-full justify-center overflow-scroll rounded-xl p-2 text-white drop-shadow-md">
+    <div className="h-[84vh] w-full justify-center overflow-scroll rounded-xl bg-black-600 p-2 text-white drop-shadow-md">
       <div className="w-full overflow-scroll align-middle">
         <table className="w-full overflow-scroll">
           <thead className="text-left text-sm font-normal">
             <tr className="border-b">
               <th
                 scope="col"
-                className="bg-black-600 sticky left-0 px-3 py-3 font-bold"
+                className="sticky left-0 bg-black-600 px-3 py-3 font-bold"
               >
                 Categoria
               </th>
@@ -86,7 +85,7 @@ export default function ExpensesByCatg({
                 key={cat.id}
                 className="border-b border-gray-700 py-2 text-sm last-of-type:border-none"
               >
-                <td className="bg-black-600 sticky left-0 py-3 pl-3 pr-3 font-bold">
+                <td className="sticky left-0 bg-black-600 py-3 pl-3 pr-3 font-bold">
                   {cat.name}
                 </td>
                 {monthList.map((month) => (
