@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectedPin } from '@/app/store/pin-context';
 import { selectedYear } from '@/app/store/year-context';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import EmptyData from '../ui/EmptyData';
 
 export default async function Balances() {
@@ -46,12 +45,13 @@ export default async function Balances() {
           style={{ height: 'calc(100% - 2rem)' }}
         >
           <div className="text-center">
-            <CircularProgress
+          
+           <CircularProgress
               classNames={{
                 svg: 'w-24 h-24 drop-shadow-md',
                 indicator: 'stroke-lilac-100',
                 track: 'stroke-white/30',
-                value: 'text-xl font-semibold text-lilac-800',
+                value: 'text-xl font-semibold text-lilac-800 text-center',
               }}
               size="lg"
               value={balance.percentage}
@@ -59,7 +59,7 @@ export default async function Balances() {
               showValueLabel={true}
               aria-label="Percentagem rendimento gasto"
             />
-          </div>
+     </div>
         </div>
       </div>
       <div className="bg-black-600 flex w-[20%] flex-col justify-center gap-2 rounded-xl p-8 text-left text-white text-white drop-shadow-md drop-shadow-md">

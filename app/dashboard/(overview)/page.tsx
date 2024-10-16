@@ -11,7 +11,6 @@ import {
   MonthlyBalanceSkeleton,
 } from '@/app/ui/skeletons';
 import MonthlyBalance from '@/app/ui/dashboard/MonthlyBalance';
-import Balance from '@/app/ui/dashboard/Balance';
 import AccountsBalance from '@/app/ui/dashboard/AccountsBalance';
 import Balances from '@/app/ui/dashboard/Balances';
 
