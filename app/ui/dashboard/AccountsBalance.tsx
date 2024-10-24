@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import {
   CreditCardIcon,
@@ -8,42 +7,25 @@ import {
   ShoppingCartIcon,
   ArrowTrendingUpIcon,
   LockClosedIcon,
-  ExclamationCircleIcon,
   BuildingLibraryIcon,
 } from '@heroicons/react/24/outline';
 
-import { selectedPin } from '@/app/store/pin-context';
-import { selectedYear } from '@/app/store/year-context';
-import { fetchAccounts } from '@/app/lib/accounts';
-import { Account } from '@/app/lib/definitions';
+import { accountsList } from '@/app/store/accounts-context';
+import EmptyData from '../ui/EmptyData';
 
-export default async function AccountsBalance() {
-  const [accounts, setAccounts] = useState([]);
-  const pin = useSelector(selectedPin);
-  const year = useSelector(selectedYear);
-
-  useEffect(() => {
-    const getData = async () => {
-      let allAccounts = await fetchAccounts(pin);
-      setAccounts(
-        allAccounts.filter((account: Account) => account.active === true),
-      );
-    };
-
-    getData();
-  }, [pin, year]);
+export default function AccountsBalance() {
+  const accounts = useSelector(accountsList);
 
   if (!accounts || accounts.length === 0) {
     return (
-      <div className="bg-black-600 mr-4 flex h-[62vh] flex-row items-center justify-center rounded-xl p-4 text-white drop-shadow-md">
-        <ExclamationCircleIcon className="pointer-events-none mr-2 h-[24px] w-[24px] text-red-500" />
-        <p className="text-gray-400">Não foi encontrada informação.</p>
+      <div className="mr-4 flex h-[35vh] flex-row">
+        <EmptyData />
       </div>
     );
   }
 
   return (
-    <div className="bg-black-600 mr-4 flex h-[62vh] flex-col justify-between rounded-xl p-4 text-white drop-shadow-md">
+    <div className="mr-4 flex h-[35vh] flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
       <div className="overflow-y-auto overflow-x-hidden">
         {accounts.map(
           (account, i) =>
@@ -90,7 +72,7 @@ export default async function AccountsBalance() {
                     <BuildingLibraryIcon className="pointer-events-none mx-2 h-9 w-9 text-orange-400" />
                   )}
                 </div>
-                <div className="p-3">
+                <div className="p-2">
                   <h2 className="text-lg font-bold">{account.name}</h2>
                   <p>{account.balance}€</p>
                 </div>

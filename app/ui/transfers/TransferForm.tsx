@@ -13,14 +13,11 @@ import {
   CalendarDaysIcon,
   WalletIcon,
 } from '@heroicons/react/24/outline';
+import { store } from '@/app/store/store';
+import { addTransfer } from '@/app/store/transfers-context';
+import { getAccounts } from '@/app/store/accounts-context';
 
-export default function TransferForm({
-  accounts,
-  updateHandler,
-}: {
-  accounts: Account[];
-  updateHandler: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function TransferForm({ accounts }: { accounts: Account[] }) {
   const pin = useSelector(selectedPin);
   const formRef = useRef(null);
   const [name, setName] = useState('');
@@ -43,8 +40,8 @@ export default function TransferForm({
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    newTransferHandler(formData, pin);
-    updateHandler((old) => !old);
+    store.dispatch(addTransfer(formData));
+    store.dispatch(getAccounts());
     event.target.reset();
   };
 
@@ -56,7 +53,7 @@ export default function TransferForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
+      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
         <h2 className="text-lg font-bold">Nova Transferência</h2>
 
         <div className="relative mt-3 rounded-md">

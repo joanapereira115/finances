@@ -1,22 +1,13 @@
 'use client';
 
-import { Dispatch, SetStateAction } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 import { Account } from '@/app/lib/definitions';
 import Pagination from '@/app/ui/ui/Pagination';
-import AccountsTable from './AccountsTable';
-import EmptyData from '../ui/EmptyData';
+import AccountsTable from '@/app/ui/accounts/AccountsTable';
+import EmptyData from '@/app/ui/ui/EmptyData';
 
-export default async function Accounts({
-  accounts,
-  pin,
-  updateHandler,
-}: {
-  accounts: Account[];
-  pin: string;
-  updateHandler: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function Accounts({ accounts }: { accounts: Account[] }) {
   if (!accounts || accounts.length === 0) {
     return <EmptyData />;
   }
@@ -27,12 +18,7 @@ export default async function Accounts({
   return (
     <div>
       <div className="justify-center">
-        <AccountsTable
-          accounts={accounts}
-          page={page}
-          pin={pin}
-          accountUpdate={updateHandler}
-        />
+        <AccountsTable accounts={accounts} page={page} />
         <div className="text-center">
           <Pagination totalElems={accounts.length} page={page} />
         </div>

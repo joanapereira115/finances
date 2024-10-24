@@ -1,4 +1,4 @@
-import { IRSDef, CalculatedIRS } from '@/app/lib/definitions';
+import { IRSDef } from '@/app/lib/definitions';
 import { scale, youngIRS, types, specificDeduction } from '@/app/lib/irsData';
 
 let calculateIRS = (irsData: IRSDef) => {
@@ -8,8 +8,8 @@ let calculateIRS = (irsData: IRSDef) => {
     scale[irsData.year]?.find(
       (item) => +rendCol >= +item.min && +rendCol <= +item.max,
     ) || null;
-  let tax = +scaleLine.tax;
-  let parcel = +scaleLine.parcel;
+  let tax = +scaleLine?.tax;
+  let parcel = +scaleLine?.parcel;
   let impApur = Number(((+rendCol * +tax) / 100 - +parcel).toFixed(2));
   let impIse = +0;
   if (irsData.youngIrs !== '') {
@@ -17,9 +17,9 @@ let calculateIRS = (irsData: IRSDef) => {
       youngIRS[irsData.year]?.find((item) => +irsData.youngIrs === +item.id) ||
       null;
     let limit =
-      +irsData.grossIncome * +youngLine.percentage < +youngLine.limit
+      +irsData.grossIncome * +youngLine?.percentage < +youngLine?.limit
         ? +irsData.grossIncome * +youngLine.percentage
-        : +youngLine.limit;
+        : +youngLine?.limit;
     impIse = Number(((+limit / +rendCol) * +impApur).toFixed(2));
   }
   let colTot = Number((+impApur - +impIse).toFixed(2));
@@ -63,15 +63,16 @@ function LineData({
 }
 
 export default function IRData({ irsData }: { irsData: IRSDef }) {
-  let calculatedIRS: CalculatedIRS = calculateIRS(irsData);
+  const calculatedIRS = calculateIRS(irsData);
+
   let type = types.find((tp) => tp.id === irsData?.type);
-  let title = `Declaração ${type.description}`;
+  let title = `Declaração ${type?.description}`;
 
   return (
-    <div className="bg-black-600 flex flex-col items-center justify-center rounded-xl p-4 text-white drop-shadow-md">
+    <div className="flex flex-col items-center justify-center rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
       <h2 className="text-lg font-bold">{title}</h2>
-      <h2 className="bg-black-800 m-2 rounded-xl border border-white p-3 text-xl drop-shadow-md">
-        {calculatedIRS.irsToReceive}€
+      <h2 className="m-2 rounded-xl border border-white bg-black-800 p-3 text-xl drop-shadow-md">
+        {calculatedIRS?.irsToReceive}€
       </h2>
       <hr className="border-1 m-2 w-[50%]" />
       <h2 className="font-bold">Rendimento coletável</h2>

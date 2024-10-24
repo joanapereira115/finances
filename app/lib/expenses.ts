@@ -18,7 +18,7 @@ export async function newExpense(pin: string, expense: Expense) {
         expense.account,
         +expense.value * -1,
       );
-      return {};
+      return jsonData;
     } else {
       let result = await writeToFile(EXPENSES_FILE, [expense], pin);
       await updateAccount(
@@ -27,7 +27,7 @@ export async function newExpense(pin: string, expense: Expense) {
         expense.account,
         +expense.value * -1,
       );
-      return result;
+      return [expense];
     }
   } catch (error) {
     console.error('Error adding expense data:', error);
@@ -50,7 +50,6 @@ export async function fetchExpenses(pin: string, year: number) {
       return dateB.getTime() - dateA.getTime();
     });
     result = expenses;
-
     return result;
   } catch (error) {
     console.error('Error reading file: ', EXPENSES_FILE, error);
@@ -68,13 +67,14 @@ export async function deleteExpense(id: string, pin: string) {
     );
     await writeToFile(EXPENSES_FILE, newData, pin);
     await updateAccount(ACCOUNTS_FILE, pin, prev.account, +prev.value);
+    return newData;
   } catch (error) {
     console.error('Error deleting expense:', error);
+    return [];
   }
 }
 
 /* edit existing expense */
-// ERRO!!! verificar em que conta estava antes para atualizar!!!!!
 export async function editExpense(expense: Expense, pin: string) {
   try {
     const jsonData = await readFile(EXPENSES_FILE, pin);
@@ -94,7 +94,9 @@ export async function editExpense(expense: Expense, pin: string) {
       +expense.value * -1,
     );
     await updateAccount(ACCOUNTS_FILE, pin, prev.account, +prev.value);
+    return newData;
   } catch (error) {
     console.error('Error editing expense:', error);
+    return [];
   }
 }

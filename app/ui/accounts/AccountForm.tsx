@@ -1,4 +1,6 @@
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+'use client';
+
+import { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 import {
@@ -8,15 +10,12 @@ import {
 } from '@heroicons/react/24/outline';
 
 import { accountCategories } from '@/app/lib/categories';
-import { newAccountHandler } from '@/app/lib/actions';
 import { selectedPin } from '@/app/store/pin-context';
 import { Button } from '@/app/ui/button';
+import { store } from '@/app/store/store';
+import { addAccount } from '@/app/store/accounts-context';
 
-export default function AccountForm({
-  updateHandler,
-}: {
-  updateHandler: Dispatch<SetStateAction<boolean>>;
-}) {
+export default function AccountForm() {
   const pin = useSelector(selectedPin);
   const formRef = useRef(null);
   const [name, setName] = useState('');
@@ -35,9 +34,8 @@ export default function AccountForm({
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    newAccountHandler(formData, pin);
+    store.dispatch(addAccount(formData));
     resetState();
-    updateHandler((old) => !old);
     event.target.reset();
   };
 
@@ -49,7 +47,7 @@ export default function AccountForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
+      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
         <h2 className="text-lg font-bold">Nova Conta</h2>
 
         <div className="relative mt-3 rounded-md">

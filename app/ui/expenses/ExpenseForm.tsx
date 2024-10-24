@@ -1,5 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import {
   CurrencyEuroIcon,
@@ -12,17 +11,11 @@ import {
 import { expenseCategories } from '@/app/lib/categories';
 import { Account } from '@/app/lib/definitions';
 import { Button } from '@/app/ui/button';
-import { selectedPin } from '@/app/store/pin-context';
-import { newExpenseHandler } from '@/app/lib/actions';
+import { store } from '@/app/store/store';
+import { addExpense } from '@/app/store/expenses-context';
+import { getAccounts } from '@/app/store/accounts-context';
 
-export default function ExpenseForm({
-  accounts,
-  updateHandler,
-}: {
-  accounts: Account[];
-  updateHandler: Dispatch<SetStateAction<boolean>>;
-}) {
-  const pin = useSelector(selectedPin);
+export default function ExpenseForm({ accounts }: { accounts: Account[] }) {
   const formRef = useRef(null);
   const [name, setName] = useState('');
   const [account, setAccount] = useState('');
@@ -36,8 +29,8 @@ export default function ExpenseForm({
   const handleSubmit = (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    newExpenseHandler(formData, pin);
-    updateHandler((old) => !old);
+    store.dispatch(addExpense(formData));
+    store.dispatch(getAccounts());
     event.target.reset();
   };
 
@@ -51,7 +44,7 @@ export default function ExpenseForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
+      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
         <h2 className="text-lg font-bold">Nova Despesa</h2>
 
         <div className="relative mt-3 rounded-md">

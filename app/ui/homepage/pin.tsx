@@ -1,49 +1,83 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import clsx from 'clsx';
 
+import { store } from '@/app/store/store';
 import { update } from '@/app/store/pin-context';
-import { setPriority } from 'os';
+import { initialize, pinDefined, definePin, validatePin } from '@/app/lib/auth';
 
-export default function Pin({
-  defined,
-  definePin,
-  validatePin,
-}: {
-  defined: boolean;
-  definePin: (pin: string) => {};
-  validatePin: (pin: string) => {};
-}) {
+export default function Pin() {
+  const { push } = useRouter();
   const [pin, setPin] = useState(['', '', '', '']);
+  const [defined, setDefined] = useState(false);
   const [pressedDigit, setPressedDigit] = useState<string | null>(null);
   const [error, setError] = useState('');
-  const dispatch = useDispatch();
-  const { push } = useRouter();
 
-  let title = '';
-  if (defined) {
-    title = 'Introduza o PIN';
-  } else {
-    title = 'Defina o seu PIN';
-  }
-
+  // Check if a PIN code has already been defined
+  // Initialize necessary files/folders
+  // Set up event listener for keystrokes
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.key >= '0' && event.key <= '9') || event.key === 'Backspace') {
-        setPressedDigit(event.key);
+    const isPinDefined = async () => {
+      if ((await pinDefined()) === true) {
+        setDefined(true);
       }
     };
 
-    // Add the event listener for keydown when the component mounts
+    const init = async () => {
+      initialize();
+    };
+
+    isPinDefined();
+    init();
+
     window.addEventListener('keydown', handleKeyDown);
 
-    // Clean up the event listener when the component unmounts
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
   }, []);
+
+  let title = 'Introduza o PIN';
+  if (!defined) {
+    title = 'Defina o seu PIN';
+  }
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if ((event.key >= '0' && event.key <= '9') || event.key === 'Backspace') {
+      setPressedDigit(event.key);
+    }
+  };
+
+  const handleDigitClick = (digit) => {
+    const newPin = [...pin];
+    const emptyIndex = newPin.indexOf('');
+
+    if (emptyIndex !== -1) {
+      setTimeout(() => {
+        newPin[emptyIndex] = digit;
+        setPin(newPin);
+        setPressedDigit('');
+      }, 100);
+    }
+  };
+
+  const handleBackspaceClick = () => {
+    const newPin = [...pin];
+    const lastIndex = newPin.indexOf('');
+
+    setTimeout(() => {
+      if (lastIndex !== 0 && lastIndex !== -1) {
+        newPin[lastIndex - 1] = '';
+        setPin(newPin);
+      } else if (lastIndex === -1) {
+        newPin[newPin.length - 1] = '';
+        setPin(newPin);
+      }
+      setPressedDigit('');
+    }, 100);
+  };
 
   useEffect(() => {
     if (pressedDigit) {
@@ -52,7 +86,6 @@ export default function Pin({
       } else if (pressedDigit === 'Backspace') {
         handleBackspaceClick();
       }
-      setPressedDigit('');
     }
   }, [pressedDigit]);
 
@@ -62,8 +95,7 @@ export default function Pin({
         if (defined) {
           const success = await validatePin(pin.join(''));
           if (success) {
-            dispatch(update(pin.join('')));
-            setPin(['', '', '', '']);
+            store.dispatch(update(pin.join('')));
             push('/dashboard');
           } else {
             setPin(['', '', '', '']);
@@ -72,8 +104,11 @@ export default function Pin({
         } else {
           const success = await definePin(pin.join(''));
           if (success) {
-            setPin(['', '', '', '']);
+            setDefined(true);
+          } else {
+            setError('Ocorreu um erro a definir o PIN');
           }
+          setPin(['', '', '', '']);
         }
       } else if (pin.indexOf('') === 1) {
         setError(undefined);
@@ -83,32 +118,9 @@ export default function Pin({
     definePinHandler();
   }, [pin]);
 
-  const handleDigitClick = (digit) => {
-    const newPin = [...pin];
-    const emptyIndex = newPin.indexOf('');
-
-    if (emptyIndex !== -1) {
-      newPin[emptyIndex] = digit;
-      setPin(newPin);
-    }
-  };
-
-  const handleBackspaceClick = () => {
-    const newPin = [...pin];
-    const lastIndex = newPin.indexOf('');
-
-    if (lastIndex !== 0 && lastIndex !== -1) {
-      newPin[lastIndex - 1] = '';
-      setPin(newPin);
-    } else if (lastIndex === -1) {
-      newPin[newPin.length - 1] = '';
-      setPin(newPin);
-    }
-  };
-
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
-      <div className="flex h-[50vh] w-[35%] flex-col items-center justify-center rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
+      <div className="flex h-[50vh] w-[35%] flex-col items-center justify-center rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
         <h1 className="mb-2 text-center text-xl font-normal">{title}</h1>
         {error ? (
           <p className="pb-4 text-red-500">{error}</p>
@@ -129,25 +141,34 @@ export default function Pin({
           </div>
 
           <div className="mt-4 grid grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((digit) => (
+            {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((digit) => (
               <button
                 key={digit}
-                className="text-center text-xl font-bold"
-                onClick={() => handleDigitClick(digit)}
+                className={clsx(
+                  'text-center font-bold',
+                  digit == pressedDigit ? 'text-lg' : 'text-xl',
+                )}
+                onClick={() => setPressedDigit(digit)}
               >
                 {digit}
               </button>
             ))}
             <div></div>
             <button
-              className="text-center text-xl font-bold"
-              onClick={() => handleDigitClick(0)}
+              className={clsx(
+                'text-center font-bold',
+                '0' == pressedDigit ? 'text-lg' : 'text-xl',
+              )}
+              onClick={() => setPressedDigit('0')}
             >
               {0}
             </button>
             <button
-              className="h-8 w-8 text-center"
-              onClick={handleBackspaceClick}
+              className={clsx(
+                'h-8 w-8 text-center',
+                'Backspace' == pressedDigit ? 'scale-[0.9]' : '',
+              )}
+              onClick={() => setPressedDigit('Backspace')}
             >
               &#9003; {/* Backspace Icon */}
             </button>

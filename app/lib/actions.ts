@@ -1,11 +1,10 @@
 'use server';
 
 import { Account, Expense, Income, Transfer } from './definitions';
-import { newExpense, deleteExpense, editExpense } from '@/app/lib/expenses';
-import { deleteIncome, editIncome, newIncome } from '@/app/lib/income';
-import { inactivateAccount, editAccount, newAccount } from '@/app/lib/accounts';
-import { revalidatePath } from 'next/cache';
-import { deleteTransfer, editTransfer, newTransfer } from './transfers';
+import { newExpense } from '@/app/lib/expenses';
+import { newIncome } from '@/app/lib/income';
+import { newAccount } from '@/app/lib/accounts';
+import { newTransfer } from './transfers';
 
 export const newExpenseHandler = async (formData: FormData, pin: string) => {
   let id: string = new Date().toLocaleString().replace(/\s|\/|:|,|/g, '');
@@ -26,39 +25,7 @@ export const newExpenseHandler = async (formData: FormData, pin: string) => {
   };
 
   if (id) {
-    await newExpense(pin, expense);
-  }
-};
-
-export const deleteHandler = async (id: string, type: string, pin: string) => {
-  if (type === 'income') {
-    await deleteIncome(id, pin);
-    revalidatePath('/dashboard/income');
-  } else if (type === 'expense') {
-    await deleteExpense(id, pin);
-    revalidatePath('/dashboard/expenses');
-  } else if (type === 'account') {
-    await inactivateAccount(id, pin);
-    revalidatePath('/dashboard/accounts');
-  } else if (type === 'transfer') {
-    await deleteTransfer(id, pin);
-    revalidatePath('/dashboard/transfers');
-  }
-};
-
-export const updateHandler = async (
-  item: Expense | Income | Account | Transfer,
-  type: string,
-  pin: string,
-) => {
-  if (type === 'income') {
-    await editIncome(item as Income, pin);
-  } else if (type === 'expense') {
-    await editExpense(item as Expense, pin);
-  } else if (type === 'account') {
-    await editAccount(item as Account, pin);
-  } else if (type === 'transfer') {
-    await editTransfer(item as Transfer, pin);
+    return await newExpense(pin, expense);
   }
 };
 
@@ -78,8 +45,7 @@ export const newIncomeHandler = async (formData: FormData, pin: string) => {
   };
 
   if (id) {
-    await newIncome(pin, income);
-    revalidatePath('/dashboard/income');
+    return await newIncome(pin, income);
   }
 };
 
@@ -100,8 +66,7 @@ export const newTransferHandler = async (formData: FormData, pin: string) => {
   };
 
   if (id) {
-    await newTransfer(pin, transfer);
-    revalidatePath('/dashboard/transfers');
+    return await newTransfer(pin, transfer);
   }
 };
 
@@ -119,7 +84,6 @@ export const newAccountHandler = async (formData: FormData, pin: string) => {
   };
 
   if (id) {
-    await newAccount(account, pin);
-    revalidatePath('/dashboard/accounts');
+    return await newAccount(account, pin);
   }
 };

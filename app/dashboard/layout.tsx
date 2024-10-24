@@ -1,22 +1,23 @@
-import PinContextProvider from '@/app/store/PinContextProvider';
-import YearContextProvider from '@/app/store/YearContextProvider';
-import TopBar from '@/app/ui/dashboard/TopBar';
+'use client';
+
 import SideNav from '@/app/ui/dashboard/SideNav';
+import TopBar from '@/app/ui/dashboard/TopBar';
+
+import { Provider } from 'react-redux';
+import { store } from '@/app/store/store';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <PinContextProvider>
-      <YearContextProvider>
-        <div className="flex h-[100vh] w-full flex-row overflow-hidden">
-          <SideNav />
-          <div className="flex h-full w-full flex-col">
-            <TopBar />
-            <div className="bg-black-800 flex h-full w-full flex-col mt-[100px]">
-              {children}
-            </div>
+    <div className="flex h-[100vh] w-full flex-row overflow-hidden">
+      <Provider store={store}>
+        <SideNav />
+        <div className="flex h-full w-full flex-col">
+          <TopBar />
+          <div className="mt-[100px] flex h-full w-full flex-col bg-black-800">
+            {children}
           </div>
         </div>
-      </YearContextProvider>
-    </PinContextProvider>
+      </Provider>
+    </div>
   );
 }

@@ -2,40 +2,27 @@
 
 import IRS from '@/app/ui/irs/IRS';
 import IRSForm from '@/app/ui/irs/IRSForm';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { selectedPin } from '@/app/store/pin-context';
-import { selectedYear } from '@/app/store/year-context';
-import { fetchIRS } from '@/app/lib/irs';
 import { useRouter } from 'next/navigation';
+import { irsData } from '@/app/store/irs-context';
 
 export default function Page() {
   const router = useRouter();
-  const [updated, setUpdated] = useState(false);
-  const [irsData, setIrsData] = useState(null);
   const pin = useSelector(selectedPin);
-  const year = useSelector(selectedYear);
-  let selYear = 0;
-  if (year !== undefined) {
-    selYear = +year;
-  }
+  const irs = useSelector(irsData);
 
   useEffect(() => {
-    const getData = async () => {
-      setIrsData(await fetchIRS(pin, year));
-    };
-
     if (!pin) {
       router.replace('/');
-    } else {
-      getData();
     }
-  }, [pin, year, updated]);
+  }, [router, pin]);
 
   return (
     <div className="mt-4 flex w-full">
       <div className="mx-4 w-[30%]">
-        <IRSForm irsData={irsData} updateHandler={setUpdated} />
+        <IRSForm irsData={irs} />
         <p className="m-4 text-sm text-gray-200">
           <i>
             * Esta simulação não contempla todas situações existentes para o
@@ -46,7 +33,7 @@ export default function Page() {
         </p>
       </div>
       <div className="mr-4 w-[70%]">
-        <IRS irsData={irsData} />
+        <IRS irsData={irs} />
       </div>
     </div>
   );

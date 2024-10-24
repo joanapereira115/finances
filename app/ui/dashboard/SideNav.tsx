@@ -33,7 +33,7 @@ export default function SideNav() {
   const pathname = usePathname();
 
   return (
-    <div className="bg-black-600 sticky flex h-full w-[100px] min-w-[100px] drop-shadow-md">
+    <div className="sticky flex h-full w-[100px] min-w-[100px] bg-black-600 drop-shadow-md">
       <div className="flex w-full flex-col items-center">
         <div className="flex h-[100px] items-center justify-center">
           <Image

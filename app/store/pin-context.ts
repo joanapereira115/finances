@@ -2,17 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const pinSlice = createSlice({
   name: 'pin',
-  initialState: {
-    value: '',
-  },
+  initialState: '',
   reducers: {
     update: (state, action) => {
-      state.value = action.payload;
+      return action.payload;
     },
   },
 });
 
 export const { update } = pinSlice.actions;
-export const selectedPin = (state) => state.pin.value;
+export const selectedPin = (state) => state.pin;
 
 export default pinSlice.reducer;

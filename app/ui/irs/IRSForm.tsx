@@ -1,38 +1,21 @@
 'use client';
 
-import React, {
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 
 import { Button } from '@/app/ui/button';
-import { selectedPin } from '@/app/store/pin-context';
 import { selectedYear } from '@/app/store/year-context';
 
-import {
-  CurrencyEuroIcon,
-  CalendarDaysIcon,
-  WalletIcon,
-} from '@heroicons/react/24/outline';
+import { CurrencyEuroIcon, WalletIcon } from '@heroicons/react/24/outline';
 import { IRSDef } from '@/app/lib/definitions';
-import { updateIRS } from '@/app/lib/irs';
 import { youngIRS, types } from '@/app/lib/irsData';
+import { store } from '@/app/store/store';
+import { updateIRS } from '@/app/store/irs-context';
 
-export default function IRSForm({
-  irsData,
-  updateHandler,
-}: {
-  irsData: IRSDef;
-  updateHandler: Dispatch<SetStateAction<boolean>>;
-}) {
-  const pin = useSelector(selectedPin);
-  const year = useSelector(selectedYear);
+export default function IRSForm({ irsData }: { irsData: IRSDef }) {
   const formRef = useRef(null);
+  const year = useSelector(selectedYear);
   const [type, setType] = useState('');
   const [gross, setGross] = useState<string | number>('');
   const [retention, setRetention] = useState<string | number>('');
@@ -75,8 +58,7 @@ export default function IRSForm({
       socialSecurity: 0,
       countyAid: 0,
     };
-    updateIRS(pin, irsData);
-    updateHandler((old) => !old);
+    store.dispatch(updateIRS(irsData));
   };
 
   const onReset = (event) => {
@@ -87,7 +69,7 @@ export default function IRSForm({
 
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
-      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 text-white p-4 drop-shadow-md">
+      <div className="flex grow flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
         <h2 className="text-lg font-bold">Simulador IRS</h2>
 
         <div className="relative mt-3 rounded-md">
@@ -158,7 +140,6 @@ export default function IRSForm({
             id="young"
             name="young"
             className="peer mt-1 block w-full cursor-pointer rounded-md border border-white bg-black-600 py-2 pl-10 text-sm outline-2 placeholder:text-gray-500"
-            defaultValue=""
             required
             onChange={(e) => setYoung(e.target.value)}
             value={young}

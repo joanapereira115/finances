@@ -1,7 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
 import { Account, Column } from '@/app/lib/definitions';
-import DataTable from '../ui/DataTable';
-import { deleteHandler, updateHandler } from '@/app/lib/actions';
+import DataTable from '@/app/ui/ui/DataTable';
 
 const columns: Column[] = [
   { id: 'name', name: 'Descrição', sortable: true },
@@ -14,25 +12,16 @@ const columns: Column[] = [
 export default function AccountsTable({
   accounts,
   page,
-  pin,
-  accountUpdate,
 }: {
   accounts: Account[];
   page: string;
-  pin: string;
-  accountUpdate: Dispatch<SetStateAction<boolean>>;
 }) {
   return (
     <DataTable
       items={accounts}
       page={page}
-      accounts={accounts}
       columns={columns}
-      updateHandler={updateHandler}
-      deleteHandler={deleteHandler}
-      setUpdated={accountUpdate}
       type="account"
-      pin={pin}
     />
   );
 }

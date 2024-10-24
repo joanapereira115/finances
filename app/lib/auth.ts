@@ -2,7 +2,7 @@
 
 import { promises as fs } from 'fs';
 import bcrypt from 'bcryptjs';
-import { revalidatePath } from 'next/cache';
+
 import {
   TARGET_DIR,
   PIN_FILE,
@@ -49,7 +49,6 @@ export async function definePin(pin: string) {
 
   try {
     await fs.writeFile(PIN_FILE, JSON.stringify({ pin: hashedPin }), 'utf-8');
-    revalidatePath('/');
     return true;
   } catch (error) {
     return false;

@@ -32,9 +32,11 @@ export async function updateIRS(pin: string, irsData: IRSDef) {
         return irs;
       });
       await writeToFile(IRS_FILE, newData, pin);
+      return irsData;
     } else {
       jsonData.push(irsData);
       await writeToFile(IRS_FILE, jsonData, pin);
+      return irsData;
     }
   } catch (error) {
     console.error('Error reading file:', error);

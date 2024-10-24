@@ -27,8 +27,15 @@ export async function fetchAccounts(pin: string) {
       (catA === 'CARD' && catB !== 'CARD') ||
       (catA === 'MONE' && catB !== 'CARD') ||
       (catA === 'MEAL' && catB !== 'CARD' && catB !== 'MONE') ||
-      (catA === 'SAVI' && catB !== 'CARD' && catB !== 'MONE' && catB !== 'MEAL') ||
-      (catA === 'INVE' && catB !== 'CARD' && catB !== 'MONE' && catB !== 'MEAL' && catB !== 'SAVI')
+      (catA === 'SAVI' &&
+        catB !== 'CARD' &&
+        catB !== 'MONE' &&
+        catB !== 'MEAL') ||
+      (catA === 'INVE' &&
+        catB !== 'CARD' &&
+        catB !== 'MONE' &&
+        catB !== 'MEAL' &&
+        catB !== 'SAVI')
     ) {
       return -1;
     } else {
@@ -72,8 +79,10 @@ export async function newAccount(account: Account, pin: string) {
     if (jsonData.length > 0) {
       jsonData.push(account);
       await writeToFile(ACCOUNTS_FILE, jsonData, pin);
+      return jsonData;
     } else {
       await writeToFile(ACCOUNTS_FILE, [account], pin);
+      return [account];
     }
   } catch (error) {
     console.log('Error adding account data:', error);
@@ -93,16 +102,18 @@ export async function inactivateAccount(id: string, pin: string) {
       });
 
       await writeToFile(ACCOUNTS_FILE, newData, pin);
+      return newData;
     } else {
       console.log('Error inactivating account');
+      return jsonData;
     }
   } catch (error) {
     console.log('Error inactivating account:', error);
+    return [];
   }
 }
 
 export async function editAccount(account: Account, pin: string) {
-
   try {
     const jsonData = await readFile(ACCOUNTS_FILE, pin);
     const newData = jsonData.map((acc: Account) => {
@@ -113,8 +124,10 @@ export async function editAccount(account: Account, pin: string) {
     });
 
     await writeToFile(ACCOUNTS_FILE, newData, pin);
+    return newData;
   } catch (error) {
     console.log('Error editing account:', error);
+    return [];
   }
 }
 

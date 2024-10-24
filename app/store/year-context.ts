@@ -2,17 +2,15 @@ import { createSlice } from '@reduxjs/toolkit';
 
 export const yearSlice = createSlice({
   name: 'year',
-  initialState: {
-    value: 0,
-  },
+  initialState: 0,
   reducers: {
     update: (state, action) => {
-      state.value = action.payload;
+      return action.payload;
     },
   },
 });
 
 export const { update } = yearSlice.actions;
-export const selectedYear = (state) => state.year.value;
+export const selectedYear = (state) => state.year;
 
 export default yearSlice.reducer;

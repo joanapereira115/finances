@@ -1,54 +1,106 @@
 'use client';
 
-import clsx from 'clsx';
-import {
-  PlusCircleIcon,
-  MinusCircleIcon,
-  ExclamationCircleIcon,
-} from '@heroicons/react/24/outline';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectedPin } from '@/app/store/pin-context';
+import { selectedYear } from '@/app/store/year-context';
+import { fetchMonthlyAccumulated } from '@/app/lib/data';
 
-import { History } from '@/app/lib/definitions';
-import { formatDateToLocal } from '@/app/lib/utils';
+let columns = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Abr',
+  'Mai',
+  'Jun',
+  'Jul',
+  'Ago',
+  'Set',
+  'Out',
+  'Nov',
+  'Dez',
+];
 
-export default function HistoryTable({ history }: { history: History[] }) {
+export default function HistoryTable() {
+
+  let history = [];
+
+  const [monthlyBalance, setMonthlyBalance] = useState(null);
+  const pin = useSelector(selectedPin);
+  const year = useSelector(selectedYear);
+
+  useEffect(() => {
+    const getData = async () => {
+      setMonthlyBalance(await fetchMonthlyAccumulated(pin, year));
+    };
+
+    getData();
+  }, [pin, year]);
+
+  if (history === undefined) {
+
+  }
+
   return (
-    <div
-      className={clsx(
-        'ml-4 mt-4 flex h-[30vh] grow flex-col rounded-xl bg-black-600 text-white p-4 drop-shadow-md',
-        {
-          'justify-between': history?.length === 5,
-        },
-      )}
-    >
-      {history === undefined ||
-        (history?.length === 0 && (
-          <div className="flex h-full flex-row items-center justify-center p-2">
-            <ExclamationCircleIcon className="pointer-events-none mr-2 h-[24px] w-[24px] text-red-500" />
-            <p className="text-gray-400">Não foi encontrada informação.</p>
-          </div>
-        ))}
-      {history?.map((hist, i) => {
-        return (
-          <div
-            key={hist.id}
-            className={clsx('flex flex-row items-center justify-between p-2', {
-              'border-t': i !== 0,
-              'p-4': history?.length !== 5,
-            })}
-          >
-            <div className="flex w-full items-center">
-              {hist.type === 'income' ? (
-                <PlusCircleIcon className="pointer-events-none mr-2 h-[18px] w-[18px] text-green-500" />
-              ) : (
-                <MinusCircleIcon className="pointer-events-none mr-2 h-[18px] w-[18px] text-red-500" />
-              )}
-              <p className="w-[25%] text-base font-semibold">{hist.name}</p>
-              <p className="w-[30%]">{formatDateToLocal(hist.date)}</p>
-            </div>
-            <p className="w-[10%] text-base font-medium">{hist.value}€</p>
-          </div>
-        );
-      })}
-    </div>
+    <div className="bg-black-600 rounded-xl px-4 py-2 text-white drop-shadow-md mt-4 mr-4 justify-center overflow-scroll" style={{ width: 'calc(100% - 1rem)' }}>
+      <div className="inline-block min-w-[99%] align-middle overflow-scroll">
+        <table className="w-full overflow-scroll">
+          <thead className="text-left text-sm font-normal">
+            <tr className="border-b">
+            <th scope="col" className="px-3 py-3 font-bold"></th>
+              {columns?.map((col) => (
+                <th key={col} scope="col" className="px-3 py-3 font-bold">
+                  <span className="flex items-center">
+                      {col}</span> </th> ))} </tr> </thead>
+                      <tbody>
+                      <tr
+                
+                className="border-b border-gray-700 py-2 text-sm last-of-type:border-none"
+              ><td
+              >Rendimentos</td>
+                      {monthlyBalance?.map((item, ind) => (
+              
+                <td
+                key={`inc${ind}`}
+                      className="py-3 pl-2 pr-2"
+                    >
+                      {item.income}
+                    </td>
+                ))}
+              </tr>
+
+              <tr
+                
+                className="border-b border-gray-700 py-2 text-sm last-of-type:border-none"
+              ><td
+              >Despesas</td>
+                      {monthlyBalance?.map((item, ind) => (
+              
+                <td
+                key={`exp${ind}`}
+                      className="py-3 pl-2 pr-2"
+                    >
+                      {item.expense}
+                    </td>
+                ))}
+              </tr>
+
+              <tr
+                
+                className="border-b border-gray-700 py-2 text-sm last-of-type:border-none"
+              ><td
+              >Diferença</td>
+                      {monthlyBalance?.map((item, ind) => (
+              
+                <td
+                key={`dif${ind}`}
+                      className="py-3 pl-2 pr-2"
+                    >
+                      {item.difference}
+                    </td>
+                ))}
+              </tr> 
+                      </tbody>
+                       </table> </div> </div>
   );
 }

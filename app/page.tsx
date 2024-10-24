@@ -1,25 +1,16 @@
-import Pin from '@/app/ui/homepage/pin';
-import PinContextProvider from '@/app/store/PinContextProvider';
-import { initialize, pinDefined, definePin, validatePin } from '@/app/lib/auth';
+'use client';
 
-export default async function Page() {
-  let defined = false;
+import { Provider } from 'react-redux';
 
-  if ((await pinDefined()) === true) {
-    defined = true;
-  }
+import { store } from '@/app/store/store';
+import Pin from '@/app/ui/homepage/Pin';
 
-  await initialize();
-
+export default function Page() {
   return (
-    <div className="bg-black-800 flex h-[100vh] overflow-hidden">
-      <PinContextProvider>
-        <Pin
-          defined={defined}
-          definePin={definePin}
-          validatePin={validatePin}
-        ></Pin>
-      </PinContextProvider>
+    <div className="flex h-[100vh] overflow-hidden bg-black-800">
+      <Provider store={store}>
+        <Pin />
+      </Provider>
     </div>
   );
 }

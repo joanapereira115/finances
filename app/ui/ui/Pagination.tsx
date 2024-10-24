@@ -1,9 +1,10 @@
 'use client';
 
-import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
-import clsx from 'clsx';
-import Link from 'next/link';
 import { usePathname, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
+import clsx from 'clsx';
+import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
+
 import { generatePagination } from '@/app/lib/utils';
 
 const ELEMS_PER_PAGE: number = 10;
@@ -25,7 +26,8 @@ function PaginationNumber({
       'rounded-l-md': position === 'first' || position === 'single',
       'rounded-r-md': position === 'last' || position === 'single',
       'z-10 bg-lilac-100 border-lilac-100 text-white': isActive,
-      'hover:bg-gray-100 hover:text-black-600': !isActive && position !== 'middle',
+      'hover:bg-gray-100 hover:text-black-600':
+        !isActive && position !== 'middle',
       'text-gray-300': position === 'middle',
     },
   );

@@ -13,14 +13,15 @@ export async function newIncome(pin: string, income: Income) {
       jsonData.push(income);
       await writeToFile(INCOME_FILE, jsonData, pin);
       await updateAccount(ACCOUNTS_FILE, pin, income.account, income.value);
-      return {};
+      return jsonData;
     } else {
       await writeToFile(INCOME_FILE, [income], pin);
       await updateAccount(ACCOUNTS_FILE, pin, income.account, income.value);
+      return [income];
     }
   } catch (error) {
     console.error('Error adding income data:', error);
-    return { error: true };
+    return [];
   }
 }
 
@@ -54,8 +55,10 @@ export async function deleteIncome(id: string, pin: string) {
 
     await writeToFile(INCOME_FILE, newData, pin);
     await updateAccount(ACCOUNTS_FILE, pin, prev.account, +prev.value * -1);
+    return newData;
   } catch (error) {
     console.error('Error deleting income:', error);
+    return [];
   }
 }
 
@@ -72,19 +75,11 @@ export async function editIncome(income: Income, pin: string) {
     });
 
     await writeToFile(INCOME_FILE, newData, pin);
-    await updateAccount(
-      ACCOUNTS_FILE,
-      pin,
-      income.account,
-      +income.value,
-    );
-    await updateAccount(
-      ACCOUNTS_FILE,
-      pin,
-      prev.account,
-      +prev.value * -1,
-    );
+    await updateAccount(ACCOUNTS_FILE, pin, income.account, +income.value);
+    await updateAccount(ACCOUNTS_FILE, pin, prev.account, +prev.value * -1);
+    return newData;
   } catch (error) {
     console.error('Error editing income:', error);
+    return [];
   }
 }

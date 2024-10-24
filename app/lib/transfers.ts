@@ -24,7 +24,7 @@ export async function newTransfer(pin: string, transfer: Transfer) {
         transfer.accountTo,
         transfer.value,
       );
-      return {};
+      return jsonData;
     } else {
       await writeToFile(TRANSFERS_FILE, [transfer], pin);
       await updateAccount(
@@ -39,10 +39,11 @@ export async function newTransfer(pin: string, transfer: Transfer) {
         transfer.accountTo,
         transfer.value,
       );
+      return [transfer];
     }
   } catch (error) {
     console.error('Error adding transfer data:', error);
-    return { error: true };
+    return [];
   }
 }
 
@@ -81,8 +82,10 @@ export async function deleteTransfer(id: string, pin: string) {
     await writeToFile(TRANSFERS_FILE, newData, pin);
     await updateAccount(ACCOUNTS_FILE, pin, prev.accountFrom, +prev.value);
     await updateAccount(ACCOUNTS_FILE, pin, prev.accountTo, +prev.value * -1);
+    return newData;
   } catch (error) {
     console.error('Error deleting income:', error);
+    return [];
   }
 }
 
@@ -114,7 +117,9 @@ export async function editTransfer(transfer: Transfer, pin: string) {
       +transfer.value,
     );
     await updateAccount(ACCOUNTS_FILE, pin, prev.accountTo, +prev.value * -1);
+    return newData;
   } catch (error) {
     console.error('Error editing transfer:', error);
+    return [];
   }
 }
