@@ -2,6 +2,7 @@ import { ExpensesByCat } from '@/app/lib/definitions';
 import { expenseCategories } from '@/app/lib/categories';
 import { months } from '@/app/lib/utils';
 import clsx from 'clsx';
+import EmptyData from '../ui/EmptyData';
 
 export default function ExpensesByCatg({
   expenses,
@@ -39,6 +40,10 @@ export default function ExpensesByCatg({
 
   for (let cat in totalByCat) {
     averageByCat[cat] = +totalByCat[cat] / (+currentMonth + 1);
+  }
+
+  if (Object.keys(minMaxValues).length === 0) {
+    return <EmptyData />;
   }
 
   return (

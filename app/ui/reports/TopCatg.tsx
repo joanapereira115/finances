@@ -2,6 +2,7 @@ import clsx from 'clsx';
 
 import { ExpensesByCat } from '@/app/lib/definitions';
 import { expenseCategories } from '@/app/lib/categories';
+import EmptyData from '../ui/EmptyData';
 
 export default function TopCatg({ expenses }: { expenses: ExpensesByCat[] }) {
   let totalExp = expenseCategories?.map((cat) =>
@@ -57,14 +58,25 @@ export default function TopCatg({ expenses }: { expenses: ExpensesByCat[] }) {
 
   const topCatg = totalByCatg.splice(0, 5);
 
+  if (topCatg.every((item) => item.value === 0)) {
+    return (
+      <div className="mt-4 flex h-[32vh] items-center justify-center">
+        <EmptyData />
+      </div>
+    );
+  }
+
   return (
-    <div className="mt-4 flex h-[32vh] items-center justify-center rounded-xl bg-black-600 text-white p-2 drop-shadow-md">
+    <div className="mt-4 flex h-[32vh] items-center justify-center rounded-xl bg-black-600 p-2 text-white drop-shadow-md">
       <div className="overflow-hidden text-center ">
         <h2 className="m-2 text-lg font-bold">
           Categorias com maiores despesas
         </h2>
         {topCatg.map((cat, i) => (
-          <div key={cat.cat} className="border-b border-gray-500 last-of-type:border-none">
+          <div
+            key={cat.cat}
+            className="border-b border-gray-500 last-of-type:border-none"
+          >
             <p className="flex justify-between py-2">
               <span className="w-[20%] font-bold">
                 <span

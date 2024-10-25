@@ -89,22 +89,26 @@ export default function YearCatg({ expenses }: { expenses: ExpensesByCat[] }) {
     },
   };
 
-  return (
-    <div className="bg-black-600 flex h-[50vh] flex-col justify-between rounded-xl p-4 text-white drop-shadow-md">
-      {totalByCatg.every((item) => item === 0) ? (
+  if (totalByCatg.every((item) => item === 0)) {
+    return (
+      <div className="flex h-[50vh]">
         <EmptyData />
-      ) : (
-        <div className="overflow-x-hidden overflow-y-hidden text-center">
-          <h2 className="m-2 text-lg font-bold">Despesas por categoria</h2>
-          <div className="flex items-center justify-center">
-            <Doughnut
-              className="translate-y-[-2rem] scale-[.75]"
-              data={data}
-              options={options}
-            />
-          </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="flex h-[50vh] flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
+      <div className="overflow-x-hidden overflow-y-hidden text-center">
+        <h2 className="m-2 text-lg font-bold">Despesas por categoria</h2>
+        <div className="flex items-center justify-center">
+          <Doughnut
+            className="translate-y-[-2rem] scale-[.75]"
+            data={data}
+            options={options}
+          />
         </div>
-      )}
+      </div>
     </div>
   );
 }

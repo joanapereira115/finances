@@ -178,18 +178,18 @@ export default function DataTable({
     exitEditing();
   };
 
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = (item: Expense | Income | Account | Transfer) => {
     switch (type) {
       case 'account':
-        store.dispatch(deleteAccount(id));
+        store.dispatch(deleteAccount(item.id));
       case 'income':
-        store.dispatch(deleteIncome(id));
+        store.dispatch(deleteIncome(item as Income));
         break;
       case 'expense':
-        store.dispatch(deleteExpense(id));
+        store.dispatch(deleteExpense(item as Expense));
         break;
       case 'transfer':
-        store.dispatch(deleteTransfer(id));
+        store.dispatch(deleteTransfer(item as Transfer));
         break;
     }
     store.dispatch(getAccounts());
@@ -217,9 +217,15 @@ export default function DataTable({
     );
   }
 
-  function DeleteLine({ id, active }: { id: string; active: boolean }) {
+  function DeleteLine({
+    item,
+    active,
+  }: {
+    item: Expense | Income | Account | Transfer;
+    active: boolean;
+  }) {
     return (
-      <form action={() => handleDeleteClick(id)}>
+      <form action={() => handleDeleteClick(item)}>
         <button
           className={clsx(
             editMode || !active
@@ -625,7 +631,7 @@ export default function DataTable({
           <div className="flex justify-end gap-2">
             <UpdateLine item={item} />
             <DeleteLine
-              id={item.id}
+              item={item}
               active={type === 'account' ? (item as Account).active : true}
             />
           </div>

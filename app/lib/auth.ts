@@ -6,11 +6,11 @@ import bcrypt from 'bcryptjs';
 import {
   TARGET_DIR,
   PIN_FILE,
-  EXPENSES_FILE,
-  INCOME_FILE,
   ACCOUNTS_FILE,
-  IRS_FILE,
-  TRANSFERS_FILE
+  getExpensesFile,
+  getIncomeFile,
+  getTransfersFile,
+  getIRSFile,
 } from './files';
 
 export async function pinDefined() {
@@ -55,13 +55,13 @@ export async function definePin(pin: string) {
   }
 }
 
-const getFolder = async function () {
+const getFolder = async function (folderName, year) {
   try {
-    return await fs.opendir(TARGET_DIR, { encoding: 'utf8' });
+    return await fs.opendir(folderName, { encoding: 'utf8' });
   } catch (error) {
     try {
-      await fs.mkdir(TARGET_DIR);
-      return await fs.opendir(TARGET_DIR, { encoding: 'utf8' });
+      await fs.mkdir(folderName);
+      return await fs.opendir(folderName, { encoding: 'utf8' });
     } catch (error) {
       throw error;
     }
@@ -82,15 +82,27 @@ const createFile = async function (filename) {
 
 export async function initialize() {
   try {
-    const dir = await getFolder();
-    createFile(PIN_FILE);
-    createFile(EXPENSES_FILE);
-    createFile(INCOME_FILE);
-    createFile(TRANSFERS_FILE);
-    createFile(ACCOUNTS_FILE);
-    createFile(IRS_FILE);
+    let currentYear: number | undefined = new Date().getFullYear();
+    let folderName = `${TARGET_DIR}/${currentYear}`;
+    const dir = await getFolder(folderName, currentYear);
+    await createFile(getExpensesFile(currentYear));
+    await createFile(getIncomeFile(currentYear));
+    await createFile(getTransfersFile(currentYear));
+    await createFile(getIRSFile(currentYear));
+    await createFile(PIN_FILE);
+    await createFile(ACCOUNTS_FILE);
     dir.close();
   } catch (error) {
     return false;
   }
+}
+
+export async function initializeFolder(year: number) {
+  let folderName = `${TARGET_DIR}/${year}`;
+  const dir = await getFolder(folderName, year);
+  await createFile(getExpensesFile(year));
+  await createFile(getIncomeFile(year));
+  await createFile(getTransfersFile(year));
+  await createFile(getIRSFile(year));
+  dir.close();
 }

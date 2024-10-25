@@ -1,12 +1,8 @@
 'use server';
 
-import {
-  writeToFile,
-  readFile,
-  ACCOUNTS_FILE,
-  EXPENSES_FILE,
-  INCOME_FILE,
-} from './files';
+import { promises as fs } from 'fs';
+
+import { writeToFile, readFile, ACCOUNTS_FILE, TARGET_DIR } from './files';
 import { Account, Income, Expense } from './definitions';
 
 export async function fetchAccounts(pin: string) {
@@ -131,6 +127,20 @@ export async function editAccount(account: Account, pin: string) {
   }
 }
 
+async function getSubfolders(targetDir) {
+  const subfolders = [];
+
+  const dir = await fs.opendir(targetDir, { encoding: 'utf8' });
+
+  for await (const dirent of dir) {
+    if (dirent.isDirectory()) {
+      subfolders.push(dirent.name);
+    }
+  }
+
+  return subfolders;
+}
+
 export async function getAvailableYears(pin: string) {
   let result = { availableYears: [], currentYear: undefined };
 
@@ -139,32 +149,16 @@ export async function getAvailableYears(pin: string) {
   }
 
   try {
-    let incomeData = await readFile(INCOME_FILE, pin);
-    let expensesData = await readFile(EXPENSES_FILE, pin);
-
-    if (!incomeData && !expensesData) {
-      return result;
-    }
-
-    let incomeYears = Array.from(
-      new Set(incomeData.map((item: Income) => item.year)),
+    const folders = await getSubfolders(TARGET_DIR);
+    const availableYearsStr = folders.filter((folder) =>
+      /^20\d{2}$/.test(folder),
     );
-    let expenseYears = Array.from(
-      new Set(expensesData.map((item: Expense) => item.year)),
-    );
-
-    let allYears = [...incomeYears, ...expenseYears];
-    let availableYears = Array.from(new Set(allYears));
-
+    let availableYears = availableYearsStr.map((year) => Number(year));
     availableYears.sort((a: unknown, b: unknown) => {
-      return Number(a) - Number(b);
+      return +a - +b;
     });
 
     let currentYear: number | undefined = new Date().getFullYear();
-    if (!availableYears.includes(currentYear)) {
-      currentYear = undefined;
-    }
-
     return { availableYears, currentYear };
   } catch (error) {
     console.log('Error getting years:', error);

@@ -8,51 +8,6 @@ import {
 } from './definitions';
 import { expenseCategories, accountCategories } from '@/app/lib/categories';
 
-/* retrieve the last five operations of a determined year */
-/* export async function fetchHistory(pin: string, year: number) {
-  let result: History[] = [];
-
-  if (!pin) {
-    return result;
-  }
-  let income = [];
-  let expenses = [];
-  let incomeData = await readFile(INCOME_FILE, pin);
-  let expensesData = await readFile(EXPENSES_FILE, pin);
-
-  if (incomeData?.length === 0 && expensesData?.length === 0) {
-    return result;
-  }
-
-  if (incomeData) {
-    income = incomeData.filter((income: Income) => +income.year === +year);
-    income.forEach((inc: History) => {
-      inc.type = 'income';
-    });
-  }
-
-  if (expensesData) {
-    expenses = expensesData.filter(
-      (expense: Expense) => +expense.year === +year,
-    );
-    expenses.forEach((exp: History) => {
-      exp.type = 'expense';
-    });
-  }
-
-  let all = [...income, ...expenses];
-
-  all.sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateB.getTime() - dateA.getTime();
-  });
-
-  result = all.slice(0, 5);
-
-  return result;
-} */
-
 /* retrieve the year expenses, income and difference balance organized by months */
 export function fetchMonthlyBalance(year: number, incomeData, expensesData) {
   let result = {

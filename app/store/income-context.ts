@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { RootState } from './store';
+import { RootState, store } from './store';
 import { Income } from '../lib/definitions';
 import { newIncomeHandler } from '@/app/lib/actions';
 import {
@@ -8,6 +8,7 @@ import {
   deleteIncome as deleteIncomeLogic,
   editIncome,
 } from '../lib/income';
+import { update } from './year-context';
 
 const getPin = (getState: () => RootState): string | undefined => {
   return (getState() as RootState).pin;
@@ -21,6 +22,14 @@ const fulfilledReducer = (
   state: Income[],
   action: { payload?: Income[] },
 ): Income[] => {
+  if (action.payload !== undefined) {
+    action.payload.sort((a: Income, b: Income) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
+  }
+
   return action.payload !== undefined ? action.payload : state;
 };
 
@@ -39,18 +48,27 @@ export const addIncome = createAsyncThunk(
   'income/addIncome',
   async (income: FormData, { getState }) => {
     const pin = getPin(getState as () => RootState);
+    const year = getYear(getState as () => RootState);
+    const incomeYear: number = new Date(
+      (income.get('date') as string) || '',
+    ).getFullYear();
+
     if (pin) {
-      return await newIncomeHandler(income, pin);
+      let incomeList = await newIncomeHandler(income, pin);
+      if (incomeYear != year) {
+        store.dispatch(update(incomeYear));
+      }
+      return incomeList;
     }
   },
 );
 
 export const deleteIncome = createAsyncThunk(
   'income/deleteIncome',
-  async (id: string, { getState }) => {
+  async (income: Income, { getState }) => {
     const pin = getPin(getState as () => RootState);
     if (pin) {
-      return await deleteIncomeLogic(id, pin);
+      return await deleteIncomeLogic(income.id, income.year, pin);
     }
   },
 );

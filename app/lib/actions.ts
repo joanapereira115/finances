@@ -5,12 +5,18 @@ import { newExpense } from '@/app/lib/expenses';
 import { newIncome } from '@/app/lib/income';
 import { newAccount } from '@/app/lib/accounts';
 import { newTransfer } from './transfers';
+import { initializeFolder } from './auth';
 
 export const newExpenseHandler = async (formData: FormData, pin: string) => {
   let id: string = new Date().toLocaleString().replace(/\s|\/|:|,|/g, '');
   let year: number = new Date(
     (formData.get('date') as string) || '',
   ).getFullYear();
+  let currentYear: number | undefined = new Date().getFullYear();
+
+  if (year && year !== currentYear) {
+    await initializeFolder(year);
+  }
 
   const expense: Expense = {
     id: id,
@@ -35,6 +41,12 @@ export const newIncomeHandler = async (formData: FormData, pin: string) => {
     (formData.get('date') as string) || '',
   ).getFullYear();
 
+  let currentYear: number | undefined = new Date().getFullYear();
+
+  if (year && year !== currentYear) {
+    await initializeFolder(year);
+  }
+
   const income: Income = {
     id: id,
     name: formData.get('name') as string,
@@ -54,6 +66,12 @@ export const newTransferHandler = async (formData: FormData, pin: string) => {
   let year: number = new Date(
     (formData.get('date') as string) || '',
   ).getFullYear();
+
+  let currentYear: number | undefined = new Date().getFullYear();
+
+  if (year && year !== currentYear) {
+    await initializeFolder(year);
+  }
 
   const transfer: Transfer = {
     id: id,

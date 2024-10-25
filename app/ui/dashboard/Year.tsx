@@ -1,6 +1,5 @@
 'use client';
 
-import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -21,28 +20,31 @@ export default function Year({
     currentYear: undefined | number;
   };
 }) {
-  const dispatch = useDispatch();
   const year = useSelector(selectedYear);
 
   useEffect(() => {
-    if (year != years.currentYear && years.currentYear) {
+    if (!year && years.availableYears.includes(years.currentYear)) {
       store.dispatch(update(years.currentYear));
     }
-  }, [years]);
+  }, [year, years]);
 
   useEffect(() => {
-    store.dispatch(getExpenses());
-    store.dispatch(getIncome());
-    store.dispatch(getAccounts());
-    store.dispatch(getTransfers());
-    store.dispatch(getIRS());
+    if (year) {
+      store.dispatch(getExpenses());
+      store.dispatch(getIncome());
+      store.dispatch(getAccounts());
+      store.dispatch(getTransfers());
+      store.dispatch(getIRS());
+    }
   }, [year]);
 
   return (
     <select
       className="block cursor-pointer rounded-md border bg-black-600 text-sm text-white outline-2 placeholder:text-white"
       value={year}
-      onChange={(e) => dispatch(update(e.target.value as unknown as number))}
+      onChange={(e) => {
+        store.dispatch(update(e.target.value as unknown as number));
+      }}
     >
       {years.availableYears &&
         years.availableYears?.map((y) => (

@@ -2,13 +2,31 @@ import { promises as fs } from 'fs';
 const { enc, AES } = require('crypto-js');
 
 export const HOME_DIR = process.env.HOME || process.env.USERPROFILE;
+
+export const EXPENSES_FILE = `expensesData.json`;
+export const INCOME_FILE = `incomeData.json`;
+export const TRANSFERS_FILE = `transfersData.json`;
+export const IRS_FILE = `irsData.json`;
+
 export const TARGET_DIR = `${HOME_DIR}/finances`;
-export const EXPENSES_FILE = `${TARGET_DIR}/expensesData.json`;
-export const INCOME_FILE = `${TARGET_DIR}/incomeData.json`;
 export const ACCOUNTS_FILE = `${TARGET_DIR}/accountsData.json`;
-export const TRANSFERS_FILE = `${TARGET_DIR}/transfersData.json`;
 export const PIN_FILE = `${TARGET_DIR}/pinData.json`;
-export const IRS_FILE = `${TARGET_DIR}/irsData.json`;
+
+export function getExpensesFile(year) {
+  return `${TARGET_DIR}/${year}/${EXPENSES_FILE}`;
+}
+
+export function getIncomeFile(year) {
+  return `${TARGET_DIR}/${year}/${INCOME_FILE}`;
+}
+
+export function getTransfersFile(year) {
+  return `${TARGET_DIR}/${year}/${TRANSFERS_FILE}`;
+}
+
+export function getIRSFile(year) {
+  return `${TARGET_DIR}/${year}/${IRS_FILE}`;
+}
 
 export async function readFile(filename: string, pin: string) {
   if (HOME_DIR === undefined) {

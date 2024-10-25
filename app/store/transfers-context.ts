@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { RootState } from './store';
+import { RootState, store } from './store';
 import { Transfer } from '../lib/definitions';
 import { newTransferHandler } from '@/app/lib/actions';
 import {
@@ -8,6 +8,7 @@ import {
   deleteTransfer as deleteTransferLogic,
   editTransfer,
 } from '../lib/transfers';
+import { update } from './year-context';
 
 const getPin = (getState: () => RootState): string | undefined => {
   return (getState() as RootState).pin;
@@ -21,6 +22,14 @@ const fulfilledReducer = (
   state: Transfer[],
   action: { payload?: Transfer[] },
 ): Transfer[] => {
+  if (action.payload !== undefined) {
+    action.payload.sort((a: Transfer, b: Transfer) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
+  }
+
   return action.payload !== undefined ? action.payload : state;
 };
 
@@ -39,18 +48,27 @@ export const addTransfer = createAsyncThunk(
   'transfer/addTransfer',
   async (transfer: FormData, { getState }) => {
     const pin = getPin(getState as () => RootState);
+    const year = getYear(getState as () => RootState);
+    const transferYear: number = new Date(
+      (transfer.get('date') as string) || '',
+    ).getFullYear();
+
     if (pin) {
-      return await newTransferHandler(transfer, pin);
+      let transfers = await newTransferHandler(transfer, pin);
+      if (transferYear != year) {
+        store.dispatch(update(transferYear));
+      }
+      return transfers;
     }
   },
 );
 
 export const deleteTransfer = createAsyncThunk(
   'transfer/deleteTransfer',
-  async (id: string, { getState }) => {
+  async (transfer: Transfer, { getState }) => {
     const pin = getPin(getState as () => RootState);
     if (pin) {
-      return await deleteTransferLogic(id, pin);
+      return await deleteTransferLogic(transfer.id, transfer.year, pin);
     }
   },
 );

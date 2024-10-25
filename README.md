@@ -62,13 +62,16 @@ Nesta página é possível observar:
 
 * No canto superior direito da página, uma dropdown com a lista de valores correspondentes ao ano, sendo que a opção de ano selecionada implica que toda a informação apresentada na aplicação se refere a esse ano
 * Valores anuais referentes ao ano selecionado:
-    * Percentagem do rendimento gasto no ano selecionado
     * Valor total das contas registadas
+    * Percentagem do rendimento gasto no ano selecionado
     * Diferença anual entre os rendimentos e as despesas
     * Valor total dos rendimentos desse ano
     * Valor total das despesas desse ano
 * Gráfico mensal dos rendimentos, despesas e diferença
+    * Valores mensais
+    * Valores acumulados
 * Contas registadas
+* Top 5 categorias com maiores despesas (%)
 
 ## Despesas
 

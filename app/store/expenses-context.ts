@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { RootState } from './store';
+import { RootState, store } from './store';
 import { newExpenseHandler } from '@/app/lib/actions';
 import { Expense } from '../lib/definitions';
 import {
@@ -8,6 +8,7 @@ import {
   deleteExpense as deleteExpenseLogic,
   editExpense,
 } from '@/app/lib/expenses';
+import { update } from './year-context';
 
 const getPin = (getState: () => RootState): string | undefined => {
   return (getState() as RootState).pin;
@@ -21,6 +22,14 @@ const fulfilledReducer = (
   state: Expense[],
   action: { payload?: Expense[] },
 ): Expense[] => {
+  if (action.payload !== undefined) {
+    action.payload.sort((a: Expense, b: Expense) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
+  }
+
   return action.payload !== undefined ? action.payload : state;
 };
 
@@ -39,18 +48,29 @@ export const addExpense = createAsyncThunk(
   'expenses/addExpense',
   async (expense: FormData, { getState }) => {
     const pin = getPin(getState as () => RootState);
+    const year = getYear(getState as () => RootState);
+    const expenseYear: number = new Date(
+      (expense.get('date') as string) || '',
+    ).getFullYear();
+    console.log('expenseYear: ', expenseYear);
+    console.log('year: ', year);
+
     if (pin) {
-      return await newExpenseHandler(expense, pin);
+      let expenses = await newExpenseHandler(expense, pin);
+      if (expenseYear != year) {
+        store.dispatch(update(expenseYear));
+      }
+      return expenses;
     }
   },
 );
 
 export const deleteExpense = createAsyncThunk(
   'expenses/deleteExpense',
-  async (id: string, { getState }) => {
+  async (expense: Expense, { getState }) => {
     const pin = getPin(getState as () => RootState);
     if (pin) {
-      return await deleteExpenseLogic(id, pin);
+      return await deleteExpenseLogic(expense.id, expense.year, pin);
     }
   },
 );

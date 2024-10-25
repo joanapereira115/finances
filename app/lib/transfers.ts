@@ -1,17 +1,24 @@
 'use server';
 
 import { Transfer } from './definitions';
-import { writeToFile, readFile, TRANSFERS_FILE, ACCOUNTS_FILE } from './files';
+import {
+  writeToFile,
+  readFile,
+  getTransfersFile,
+  ACCOUNTS_FILE,
+} from './files';
 import { updateAccount } from './accounts';
 
 /* create new transfer */
 export async function newTransfer(pin: string, transfer: Transfer) {
+  let transfers_file = getTransfersFile(transfer.year);
+
   try {
-    const jsonData = await readFile(TRANSFERS_FILE, pin);
+    const jsonData = await readFile(transfers_file, pin);
 
     if (jsonData.length > 0) {
       jsonData.push(transfer);
-      await writeToFile(TRANSFERS_FILE, jsonData, pin);
+      await writeToFile(transfers_file, jsonData, pin);
       await updateAccount(
         ACCOUNTS_FILE,
         pin,
@@ -26,7 +33,7 @@ export async function newTransfer(pin: string, transfer: Transfer) {
       );
       return jsonData;
     } else {
-      await writeToFile(TRANSFERS_FILE, [transfer], pin);
+      await writeToFile(transfers_file, [transfer], pin);
       await updateAccount(
         ACCOUNTS_FILE,
         pin,
@@ -49,10 +56,11 @@ export async function newTransfer(pin: string, transfer: Transfer) {
 
 /* retrieve the transfers of a determined year */
 export async function fetchTransfers(pin: string, year: number) {
+  let transfers_file = getTransfersFile(year);
   let result: Transfer[] = [];
 
   try {
-    let transferData = await readFile(TRANSFERS_FILE, pin);
+    let transferData = await readFile(transfers_file, pin);
 
     let transfers = transferData?.filter(
       (transfer: Transfer) => +transfer.year === +year,
@@ -71,15 +79,17 @@ export async function fetchTransfers(pin: string, year: number) {
 }
 
 /* delete existing transfer */
-export async function deleteTransfer(id: string, pin: string) {
+export async function deleteTransfer(id: string, year: number, pin: string) {
+  let transfers_file = getTransfersFile(year);
+
   try {
-    let transferData = await readFile(TRANSFERS_FILE, pin);
+    let transferData = await readFile(transfers_file, pin);
     const prev = transferData.find((obj: Transfer) => obj.id === id);
     const newData = transferData.filter(
       (transfer: Transfer) => transfer.id !== id,
     );
 
-    await writeToFile(TRANSFERS_FILE, newData, pin);
+    await writeToFile(transfers_file, newData, pin);
     await updateAccount(ACCOUNTS_FILE, pin, prev.accountFrom, +prev.value);
     await updateAccount(ACCOUNTS_FILE, pin, prev.accountTo, +prev.value * -1);
     return newData;
@@ -91,17 +101,19 @@ export async function deleteTransfer(id: string, pin: string) {
 
 /* edit existing transfer */
 export async function editTransfer(transfer: Transfer, pin: string) {
+  let transfers_file = getTransfersFile(transfer.year);
   try {
-    let transferData = await readFile(TRANSFERS_FILE, pin);
+    let transferData = await readFile(transfers_file, pin);
+
     const prev = transferData.find((obj: Transfer) => obj.id === transfer.id);
     const newData = transferData.map((tra: Transfer) => {
-      if (tra.id === tra.id) {
+      if (transfer.id === tra.id) {
         return transfer;
       }
       return tra;
     });
 
-    await writeToFile(TRANSFERS_FILE, newData, pin);
+    await writeToFile(transfers_file, newData, pin);
     await updateAccount(
       ACCOUNTS_FILE,
       pin,
