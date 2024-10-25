@@ -7,9 +7,12 @@ import Year from '@/app/ui/dashboard/Year';
 import Title from '@/app/ui/dashboard/Title';
 import { getAvailableYears } from '@/app/lib/accounts';
 import { selectedPin } from '@/app/store/pin-context';
+import { selectedYear } from '@/app/store/year-context';
 
 export default function TopBar() {
   const pin = useSelector(selectedPin);
+  const year = useSelector(selectedYear);
+
   const [years, setYears] = useState({
     availableYears: [],
     currentYear: undefined,
@@ -21,7 +24,7 @@ export default function TopBar() {
     };
 
     getData();
-  }, [pin]);
+  }, [pin, year]);
 
   return (
     <div

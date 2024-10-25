@@ -52,8 +52,6 @@ export const addExpense = createAsyncThunk(
     const expenseYear: number = new Date(
       (expense.get('date') as string) || '',
     ).getFullYear();
-    console.log('expenseYear: ', expenseYear);
-    console.log('year: ', year);
 
     if (pin) {
       let expenses = await newExpenseHandler(expense, pin);
