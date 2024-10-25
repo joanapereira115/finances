@@ -55,7 +55,7 @@ export async function definePin(pin: string) {
   }
 }
 
-const getFolder = async function (folderName, year) {
+const getFolder = async function (folderName) {
   try {
     return await fs.opendir(folderName, { encoding: 'utf8' });
   } catch (error) {
@@ -84,7 +84,9 @@ export async function initialize() {
   try {
     let currentYear: number | undefined = new Date().getFullYear();
     let folderName = `${TARGET_DIR}/${currentYear}`;
-    const dir = await getFolder(folderName, currentYear);
+    console.log(folderName);
+    const dir = await getFolder(TARGET_DIR);
+    const subdir = await getFolder(folderName);
     await createFile(getExpensesFile(currentYear));
     await createFile(getIncomeFile(currentYear));
     await createFile(getTransfersFile(currentYear));
@@ -92,6 +94,7 @@ export async function initialize() {
     await createFile(PIN_FILE);
     await createFile(ACCOUNTS_FILE);
     dir.close();
+    subdir.close();
   } catch (error) {
     return false;
   }
@@ -99,7 +102,7 @@ export async function initialize() {
 
 export async function initializeFolder(year: number) {
   let folderName = `${TARGET_DIR}/${year}`;
-  const dir = await getFolder(folderName, year);
+  const dir = await getFolder(folderName);
   await createFile(getExpensesFile(year));
   await createFile(getIncomeFile(year));
   await createFile(getTransfersFile(year));
