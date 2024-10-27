@@ -84,7 +84,6 @@ export async function initialize() {
   try {
     let currentYear: number | undefined = new Date().getFullYear();
     let folderName = `${TARGET_DIR}/${currentYear}`;
-    console.log(folderName);
     const dir = await getFolder(TARGET_DIR);
     const subdir = await getFolder(folderName);
     await createFile(getExpensesFile(currentYear));
