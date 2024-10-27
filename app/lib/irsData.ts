@@ -34,14 +34,14 @@ const scale = {
   ],
   2025: [
     { min: 0, max: 7703, tax: 13, parcel: 0 },
-    { min: 7704, max: 11623, tax: 18, parcel: 365.89 },
-    { min: 11624, max: 16472, tax: 23, parcel: 947.04 },
-    { min: 16473, max: 21321, tax: 26, parcel: 1441.14 },
-    { min: 21322, max: 27146, tax: 32.75, parcel: 2880.47 },
-    { min: 27147, max: 39791, tax: 37, parcel: 4034.17 },
-    { min: 39792, max: 51997, tax: 43.5, parcel: 6620.43 },
-    { min: 51998, max: 81199, tax: 45, parcel: 7400.21 },
-    { min: 81200, max: Infinity, tax: 48, parcel: 9836.45 },
+    { min: 7704, max: 11623, tax: 16.5, parcel: 269.61 },
+    { min: 11624, max: 16472, tax: 22, parcel: 908.87 },
+    { min: 16473, max: 21321, tax: 25, parcel: 1403.03 },
+    { min: 21322, max: 27146, tax: 32, parcel: 2895.50 },
+    { min: 27147, max: 39791, tax: 35.5, parcel: 3845.61 },
+    { min: 39792, max: 43000, tax: 43.5, parcel: 7028.89 },
+    { min: 43001, max: 80000, tax: 45, parcel: 7674.07 },
+    { min: 80001, max: Infinity, tax: 48, parcel: 10074.34 },
   ],
 };
 
