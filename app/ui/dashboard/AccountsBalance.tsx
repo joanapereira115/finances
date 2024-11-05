@@ -16,7 +16,9 @@ import EmptyData from '../ui/EmptyData';
 export default function AccountsBalance() {
   const accounts = useSelector(accountsList);
 
-  if (!accounts || accounts.length === 0) {
+  let activeAccounts = accounts.filter((acc) => acc.active === true);
+
+  if (!activeAccounts || activeAccounts.length === 0) {
     return (
       <div className="mr-4 flex h-[35vh] flex-row">
         <EmptyData />
@@ -27,7 +29,7 @@ export default function AccountsBalance() {
   return (
     <div className="mr-4 flex h-[35vh] flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
       <div className="overflow-y-auto overflow-x-hidden">
-        {accounts.map(
+        {activeAccounts.map(
           (account, i) =>
             account.active && (
               <div
@@ -38,37 +40,37 @@ export default function AccountsBalance() {
                   {((account.type === 'CARD' && i === 0) ||
                     (account.type === 'CARD' &&
                       i !== 0 &&
-                      account.type !== accounts[+i - 1].type)) && (
+                      account.type !== activeAccounts[+i - 1].type)) && (
                     <CreditCardIcon className="pointer-events-none mx-2 h-9 w-9 text-blue-600" />
                   )}
                   {((account.type === 'MONE' && i === 0) ||
                     (account.type === 'MONE' &&
                       i !== 0 &&
-                      account.type !== accounts[+i - 1].type)) && (
+                      account.type !== activeAccounts[+i - 1].type)) && (
                     <BanknotesIcon className="pointer-events-none mx-2 h-9 w-9 text-green-400" />
                   )}
                   {((account.type === 'MEAL' && i === 0) ||
                     (account.type === 'MEAL' &&
                       i !== 0 &&
-                      account.type !== accounts[+i - 1].type)) && (
+                      account.type !== activeAccounts[+i - 1].type)) && (
                     <ShoppingCartIcon className="pointer-events-none mx-2 h-9 w-9 text-lilac-100" />
                   )}
                   {((account.type === 'SAVI' && i === 0) ||
                     (account.type === 'SAVI' &&
                       i !== 0 &&
-                      account.type !== accounts[+i - 1].type)) && (
+                      account.type !== activeAccounts[+i - 1].type)) && (
                     <LockClosedIcon className="pointer-events-none mx-2 h-9 w-9 text-yellow-300" />
                   )}
                   {((account.type === 'INVE' && i === 0) ||
                     (account.type === 'INVE' &&
                       i !== 0 &&
-                      account.type !== accounts[+i - 1].type)) && (
+                      account.type !== activeAccounts[+i - 1].type)) && (
                     <ArrowTrendingUpIcon className="pointer-events-none mx-2 h-9 w-9 text-red-400" />
                   )}
                   {((account.type === 'CEAF' && i === 0) ||
                     (account.type === 'CEAF' &&
                       i !== 0 &&
-                      account.type !== accounts[+i - 1].type)) && (
+                      account.type !== activeAccounts[+i - 1].type)) && (
                     <BuildingLibraryIcon className="pointer-events-none mx-2 h-9 w-9 text-orange-400" />
                   )}
                 </div>

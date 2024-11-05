@@ -120,9 +120,7 @@ Nesta página é possível fazer uma simulaçáo do cálculo do valor do IRS. Es
 
 # TO DO:
 * Responsividade
-* Otimização do armazenamento dos dados
 * Filtros nas tabelas
 * Melhoria da simulação do IRS
 * Tradução EN
 * Animações
-* Limitar apresentação de dados "vazios"

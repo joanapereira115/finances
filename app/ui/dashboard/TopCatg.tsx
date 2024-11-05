@@ -95,7 +95,9 @@ export default function TopCatg() {
   return (
     <div className="mr-4 mt-4 flex h-[48vh] flex-col justify-between rounded-xl bg-black-600 p-4 text-white drop-shadow-md">
       <div className="overflow-x-hidden overflow-y-hidden text-center">
-        <h2 className="m-2 text-lg font-bold">Top 5 despesas por categoria</h2>
+        <h2 className="m-2 text-lg font-bold">
+          5 Categorias com maiores despesas
+        </h2>
         <div className="flex items-center justify-center">
           <Doughnut
             className="translate-y-[-3rem] scale-[.70]"
